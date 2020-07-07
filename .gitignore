@@ -1,0 +1,27 @@
+#pytests
+.pytest_cache
+
+#python module files
+*.pyc
+
+#MAC ds_store
+.DS_Store 
+
+#emacs stuff
+*~
+
+#__pycache__ file
+__pycache__
+
+#notes and changes files
+notes
+changes
+
+#files beginning and ending with #
+\#*# 
+
+#gifs
+*.gif
+
+#armada data
+data_vals.png
