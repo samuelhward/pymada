@@ -1,5 +1,6 @@
 #pytests
 .pytest_cache
+test.py
 
 #python module files
 *.pyc
@@ -25,3 +26,11 @@ changes
 
 #armada data
 data_vals.png
+
+#setuptools stuff
+dist/
+build/
+pymada.egg-info/
+
+#virtualenv stuff
+venv/
