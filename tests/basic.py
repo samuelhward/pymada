@@ -8,16 +8,12 @@ from pymada.classes.position import Position
 from pymada.classes.piece import Piece
 
 
-def create_test_position():
-    """Creates test position object instance
+def test_set_position():
+    """Check set position assigns a position instance
     """
 
-    test_position = Position(x=5.0, y=5.0)
-    return test_position
+    test_piece = Piece()
+    test_piece.position = Position(x=5.0, y=5.0, theta=0.0)
 
-
-def test_create_test_position():
-    """Check test position is of type Position
-    """
-
-    assert isinstance(create_test_position(), Position)
+    with pytest.raises(TypeError):
+        test_piece.position = 5.0

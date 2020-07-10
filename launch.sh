@@ -2,8 +2,6 @@
 
 #install step here or line below
 export PYTHONPATH=pymada:$PYTHONPATH
-pytest -s tests/piece.py
-pytest -s tests/ship.py
-pytest -s tests/position.py
+pytest -s tests/basic.py
 python -m pymada.launch
 
