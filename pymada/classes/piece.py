@@ -1,5 +1,6 @@
 import pymada
 import pymada.errors
+from pymada.classes.base import Base
 from pymada.classes.position import Position
 
 
@@ -20,3 +21,14 @@ class Piece:
         if not isinstance(position, Position):
             raise TypeError("Piece.position must be of type Position")
         self._position = position
+
+    @property
+    def base(self):
+        return self._base
+
+    @base.setter
+    def base(self, base):
+
+        if not isinstance(base, Base):
+            raise TypeError("Piece.base must be of type Base")
+        self._base = base

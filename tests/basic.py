@@ -4,12 +4,13 @@ import os, sys  # explicitly modify path to avoid having to constantly run setup
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import pymada
 import pymada.errors
-from pymada.classes.position import Position
+from pymada.classes.base import Base
 from pymada.classes.piece import Piece
+from pymada.classes.position import Position
 
 
-def test_set_position():
-    """Check set position assigns a position instance
+def test_piece_position():
+    """Check setting a piece's position incorrectly raises TypeError
     """
 
     test_piece = Piece()
@@ -17,3 +18,13 @@ def test_set_position():
 
     with pytest.raises(TypeError):
         test_piece.position = 5.0
+
+def test_piece_base():
+    """Check setting a piece's base incorrectly raises TypeError
+    """
+
+    test_piece = Piece()
+    test_piece.base = Base()
+
+    with pytest.raises(TypeError):
+        test_piece.base = 5.
