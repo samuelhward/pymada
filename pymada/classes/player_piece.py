@@ -24,7 +24,6 @@ class PlayerPiece(Piece):
         for zone in ["front", "rear", "left", "right"]:
             self.hull_zone[zone] = HullZone(model=self.model, zone=zone)
 
-
         # TODO calculate points here
         # TODO self.points=pymada.data.ships[self.model]['points']
 

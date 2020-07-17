@@ -7,6 +7,10 @@ import pymada.errors
 from pymada.classes.base import Base
 from pymada.classes.piece import Piece
 from pymada.classes.position import Position
+from pymada.classes.die import Die
+from pymada.classes.dice import Dice
+
+# Piece tests
 
 
 def test_piece_position():
@@ -19,6 +23,7 @@ def test_piece_position():
     with pytest.raises(TypeError):
         test_piece.position = 5.0
 
+
 def test_piece_base():
     """Check setting a piece's base incorrectly raises TypeError
     """
@@ -27,4 +32,52 @@ def test_piece_base():
     test_piece.base = Base()
 
     with pytest.raises(TypeError):
-        test_piece.base = 5.
+        test_piece.base = 5.0
+
+
+# Die tests
+
+
+def test_die_add():
+    """Check adding two Die yields a Dice instance with correct number of Die
+    """
+
+    die_1 = Die("red")
+    die_2 = Die("blue")
+
+    assert isinstance(die_1 + die_2, Dice)
+
+
+def test_die_multiply():
+    """Check multiplying a Die yields a Dice instance with correct number of Die
+    """
+
+    die_1 = Die("red")
+
+    assert isinstance(4 * die_1, Dice)
+    assert isinstance(die_1 * 4, Dice)
+
+
+# Dice tests
+
+
+def test_dice_add():
+    """Check adding two Die yields a Dice instance with correct number of Die
+    """
+
+    dice_1 = Dice(Die("red"))
+    dice_2 = Dice(Die("blue"))
+
+    assert isinstance(dice_1 + dice_2, Dice)
+    assert (dice_1 + dice_2)["red"] == 1
+    assert (dice_1 + dice_2)["blue"] == 1
+
+
+def test_dice_multiply():
+    """Check multiplying a Die yields a Dice instance with correct number of Die
+    """
+
+    dice_1 = Dice(Die("red"))
+
+    assert isinstance(dice_1 * 4, Dice)
+    assert (dice_1 * 4)["red"] == 4
