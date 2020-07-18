@@ -4,11 +4,25 @@ import os, sys  # explicitly modify path to avoid having to constantly run setup
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import pymada
 import pymada.errors
+import pymada.data.ship_data
 from pymada.classes.base import Base
 from pymada.classes.piece import Piece
 from pymada.classes.position import Position
 from pymada.classes.die import Die
 from pymada.classes.dice import Dice
+
+
+# Ship data tests
+
+
+def test_ship_data():
+    """
+    """
+
+    assert (
+        pymada.data.ship_data.ships["test_ship"]["armament"]["front"][0].colour == "red"
+    )
+
 
 # Piece tests
 

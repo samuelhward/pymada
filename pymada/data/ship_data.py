@@ -29,15 +29,15 @@ def create_ship_data_template():
 # define a test ship
 
 ships["test_ship"] = create_ship_data_template()
-ships["test_ship"]["hull_zones"] = ["front", "left", "right", "rear"]
+ships["test_ship"]["hull_zones"] = {"front", "left", "right", "rear"}
 ships["test_ship"]["shields"]["front"] = 1
 ships["test_ship"]["shields"]["left"] = 1
 ships["test_ship"]["shields"]["right"] = 1
 ships["test_ship"]["shields"]["rear"] = 1
-ships["test_ship"]["armament"]["front"] = [Die('red')]
-ships["test_ship"]["armament"]["left"] = [Die('blue')]
-ships["test_ship"]["armament"]["right"] = [Die('blue')]
-ships["test_ship"]["armament"]["rear"] = [Die('blue')]
+ships["test_ship"]["armament"]["front"] = [Die("red")]
+ships["test_ship"]["armament"]["left"] = [Die("blue")]
+ships["test_ship"]["armament"]["right"] = [Die("blue")]
+ships["test_ship"]["armament"]["rear"] = [Die("blue")]
 ships["test_ship"]["armament"]["anti-squad"] = []
 ships["test_ship"]["move"][1] = [1]
 ships["test_ship"]["move"][2] = [1, 0]
