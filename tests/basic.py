@@ -34,7 +34,7 @@ def test_Ship():
     test_ship = pymada.classes.ship.Ship(
         model="test_ship", name="a ship for testing", faction="neutral", upgrades=None
     )
-    assert test_ship._data["armament"]["front"] == 1 * "red"
+    assert test_ship.hull_zone["front"].armament == 1 * "red"
 
 
 # Piece tests

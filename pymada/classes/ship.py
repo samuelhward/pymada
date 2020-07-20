@@ -15,18 +15,15 @@ class Ship(PlayerPiece):
 
         super().__init__(model=model, name=name, faction=faction, upgrades=upgrades)
 
-        self._data = pymada.data.ship_data.ships[model]
+        self._data = pymada.data.ship_data.ships[model] #attach basic data
 
-        """
-        self.hull_zone={}
+        self.hull_zone = {} #add hull-zones
         for zone in self._data["hull_zones"]:
-            self.hull_zone[zone] = HullZone( #SO HERE HullZone's armament should be Dice() object
+            self.hull_zone[zone] = HullZone(
                 armament=self._data["armament"][zone],
                 shields=self._data["shields"][zone],
             )
-        """
 
-        # TODO add hullzones reading
         # TODO add command_dial list via command value from lookup
         # TODO add movement possibilities from lookup
         # TODO add speed as current speed
