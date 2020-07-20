@@ -6,12 +6,16 @@ from pymada.classes.hull_zone import HullZone
 
 
 class Ship(PlayerPiece):
-    """Class describing ship piece
+    """Class describing a Ship
     """
 
-    def __init__(self):
-        """Constructor for ship
+    def __init__(self, model, name, faction, upgrades=None):
+        """Constructor for Ship
         """
+
+        super().__init__(model=model, name=name, faction=faction, upgrades=upgrades)
+
+        self._data = pymada.data.ship_data.ships[model]
 
         """
         self.hull_zone={}

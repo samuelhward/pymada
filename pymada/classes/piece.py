@@ -16,6 +16,8 @@ class Piece:
         """
         self.model = model
 
+        # TODO attach Base here
+
     @property
     def position(self):
         return self._position

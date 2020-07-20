@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 import pymada
 import pymada.errors
 import pymada.data.ship_data
+import pymada.classes.ship
 from pymada.classes.base import Base
 from pymada.classes.piece import Piece
 from pymada.classes.player_piece import PlayerPiece
@@ -12,14 +13,27 @@ from pymada.classes.position import Position
 from pymada.classes.dice import Dice
 
 
-# Ship data tests
+# ship_data tests
 
 
 def test_ship_data():
     """
     """
 
-    assert pymada.data.ship_data.ships["test_ship"]["armament"]["front"]["red"] == 1
+    assert pymada.data.ship_data.ships["test_ship"]["armament"]["front"] == 1 * "red"
+
+
+# Ship tests
+
+
+def test_Ship():
+    """
+    """
+
+    test_ship = pymada.classes.ship.Ship(
+        model="test_ship", name="a ship for testing", faction="neutral", upgrades=None
+    )
+    assert test_ship._data["armament"]["front"] == 1 * "red"
 
 
 # Piece tests
@@ -72,7 +86,7 @@ def test_dice_multiply():
     assert (dice_1 * 4)["red"] == 8
 
 
-# player_piece tests
+# PlayerPiece tests
 
 
 def test_player_piece_read():
@@ -80,10 +94,7 @@ def test_player_piece_read():
     """
 
     test_player_piece = PlayerPiece(
-        name="ship for testing",
-        model="test_ship",
-        faction="imperial",
-        ship_data=pymada.data.ship_data.ships["test_ship"],
+        name="ship for testing", model="test_ship", faction="imperial"
     )
 
     assert test_player_piece.faction is "imperial"
