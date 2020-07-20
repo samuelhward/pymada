@@ -9,15 +9,19 @@ class Ship(PlayerPiece):
     """Class describing ship piece
     """
 
-    def __init__(self, name, faction, model, upgrades):
+    def __init__(self):
         """Constructor for ship
         """
 
-        super().__init__(name=name, faction=faction, model=model)
+        """
+        self.hull_zone={}
+        for zone in self._ship_data["hull_zones"]:
+            self.hull_zone[zone] = HullZone(
+                armament=self._ship_data["armament"][zone],
+                shields=self._ship_data["shields"][zone],
+            )
+        """
 
-        self.upgrades = upgrades
-
-
-        #TODO add command value from lookup
-        #TODO add movement possibilities from lookup
-        #TODO add possible upgrade slots from lookup
+        # TODO add hullzones reading
+        # TODO add command value from lookup
+        # TODO add movement possibilities from lookup

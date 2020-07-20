@@ -9,24 +9,22 @@ class PlayerPiece(Piece):
     """Class describing playable piece
     """
 
-    def __init__(self, name, faction, model):
+    def __init__(self, name, model, faction, ship_data, upgrades=None):
         """Constructor for playable piece
         """
-        super().__init__()
+        super().__init__(model=model)
 
         self.name = name
-        self.faction = faction
         self.model = model
-        self.hull_zone = {}
+        self.faction = faction
 
-        # TODO instead of ["front", "rear", "left", "right"] look up pymada.data.ships[self.model]['hull_zones'].keys()
-        # TODO to allow for SSD, squadrons etc.
-        for zone in ["front", "rear", "left", "right"]:
-            self.hull_zone[zone] = HullZone(model=self.model, zone=zone)
+        self._ship_data = ship_data
+        self._upgrades = upgrades
 
-        # TODO calculate points here
-        # TODO self.points=pymada.data.ships[self.model]['points']
+        # TODO add points as property which, when accessed, total points of the model using helper function def calculate_points()
 
-        # TODO add base hull value from lookup
-        # TODO add base speed value from lookup
+        # TODO add a Base() to describe place on board and overlaps etc.
+        # TODO add hull value from lookup
+        # TODO add speed value from lookup
         # TODO add defense tokens from lookup --> needs to be a class e.g. if ship.defense_tokens['brace'][1].is_flipped()
+        # TODO add upgrades

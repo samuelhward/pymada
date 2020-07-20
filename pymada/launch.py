@@ -6,7 +6,4 @@ from pymada.classes.ship import Ship
 
 print("launching...")
 
-shipA = Ship(name="", faction="", model="", upgrades="")
-shipA.position = Position(x=5.0, y=5.0, theta=0.0)
-
 print("finishing...")

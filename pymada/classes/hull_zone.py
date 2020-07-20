@@ -3,15 +3,17 @@ import pymada.errors
 
 
 class HullZone:
-    """class describing a hull zone
+    """Class describing a hull zone
     """
 
-    def __init__(self, model, zone):
+    def __init__(self, armament, shields):
         """Constructor for hull zone
         """
 
-        self.model = model
-        self.zone = zone
-        # TODO add shields, armament, .fire() method
-        # TODO add arc length 
-        # TODO add theta
+        self.armament = armament
+        self.shields = shields
+
+        # TODO .fire() method
+        # TODO add arc length
+        # TODO add LoS dot position + hull_zone position (which is where the edges converge i.e. the centre of the model's base)
+        # TODO add theta --> from arc length and theta can then calculate arcs

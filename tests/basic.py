@@ -7,8 +7,8 @@ import pymada.errors
 import pymada.data.ship_data
 from pymada.classes.base import Base
 from pymada.classes.piece import Piece
+from pymada.classes.player_piece import PlayerPiece
 from pymada.classes.position import Position
-from pymada.classes.die import Die
 from pymada.classes.dice import Dice
 
 
@@ -19,9 +19,7 @@ def test_ship_data():
     """
     """
 
-    assert (
-        pymada.data.ship_data.ships["test_ship"]["armament"]["front"][0].colour == "red"
-    )
+    assert pymada.data.ship_data.ships["test_ship"]["armament"]["front"]["red"] == 1
 
 
 # Piece tests
@@ -49,29 +47,6 @@ def test_piece_base():
         test_piece.base = 5.0
 
 
-# Die tests
-
-
-def test_die_add():
-    """Check adding two Die yields a Dice instance with correct number of Die
-    """
-
-    die_1 = Die("red")
-    die_2 = Die("blue")
-
-    assert isinstance(die_1 + die_2, Dice)
-
-
-def test_die_multiply():
-    """Check multiplying a Die yields a Dice instance with correct number of Die
-    """
-
-    die_1 = Die("red")
-
-    assert isinstance(4 * die_1, Dice)
-    assert isinstance(die_1 * 4, Dice)
-
-
 # Dice tests
 
 
@@ -79,19 +54,36 @@ def test_dice_add():
     """Check adding two Die yields a Dice instance with correct number of Die
     """
 
-    dice_1 = Dice(Die("red"))
-    dice_2 = Dice(Die("blue"))
+    dice_1 = Dice("red")
+    dice_2 = Dice(4 * "blue")
 
     assert isinstance(dice_1 + dice_2, Dice)
     assert (dice_1 + dice_2)["red"] == 1
-    assert (dice_1 + dice_2)["blue"] == 1
+    assert (dice_1 + dice_2)["blue"] == 4
 
 
 def test_dice_multiply():
     """Check multiplying a Die yields a Dice instance with correct number of Die
     """
 
-    dice_1 = Dice(Die("red"))
+    dice_1 = Dice(2 * "red")
 
     assert isinstance(dice_1 * 4, Dice)
-    assert (dice_1 * 4)["red"] == 4
+    assert (dice_1 * 4)["red"] == 8
+
+
+# player_piece tests
+
+
+def test_player_piece_read():
+    """
+    """
+
+    test_player_piece = PlayerPiece(
+        name="ship for testing",
+        model="test_ship",
+        faction="imperial",
+        ship_data=pymada.data.ship_data.ships["test_ship"],
+    )
+
+    assert test_player_piece.faction is "imperial"

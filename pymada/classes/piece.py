@@ -8,8 +8,13 @@ class Piece:
     """Base class describing board pieces
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, model=None):
+        """Constructor for Piece
+
+        args:
+            model - name of the real plastic model [str]        
+        """
+        self.model = model
 
     @property
     def position(self):
