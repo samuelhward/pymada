@@ -6,6 +6,7 @@ import pymada
 import pymada.errors
 import pymada.data.ship_data
 import pymada.classes.ship
+import pymada.classes.hull_zone
 from pymada.classes.base import Base
 from pymada.classes.piece import Piece
 from pymada.classes.player_piece import PlayerPiece
@@ -86,6 +87,13 @@ def test_dice_multiply():
     assert (dice_1 * 4)["red"] == 8
 
 
+def test_dice_equals():
+    """Check two Dice are equal
+    """
+
+    assert Dice("blue") == Dice("blue")
+
+
 # PlayerPiece tests
 
 
@@ -98,3 +106,15 @@ def test_player_piece_read():
     )
 
     assert test_player_piece.faction is "imperial"
+
+
+# HullZone tests
+
+
+def test_create_hull_zone():
+    """
+    """
+
+    test_hull_zone = pymada.classes.hull_zone.HullZone(armament=3 * "red", shields=1)
+    assert test_hull_zone.armament == Dice(3 * "red")
+    assert test_hull_zone.armament == 3 * "red"

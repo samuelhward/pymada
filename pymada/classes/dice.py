@@ -47,7 +47,7 @@ class Dice:
         """Overload for addition to return Dice object
         
         args:
-            other_dice - other die to add [Dice]
+            other_dice - other die object [Dice]
         """
 
         return Dice(
@@ -69,3 +69,23 @@ class Dice:
         )
 
     __rmul__ = __mul__
+
+    def __eq__(self, other_dice):
+        """Overload = operator
+        
+        args:
+            other_dice - other die object [Dice] or [str]
+        """
+
+        # if string, first convert to Dice object
+        if type(other_dice) is type(""):
+            other_dice = Dice(other_dice)
+
+        if all([self[colour] == other_dice[colour] for colour in self.colours]):
+            return True
+        else:
+            return False
+
+
+# TODO need .roll() which returns a list of strings, or Roll object which we can then extract Damage, critical etc. then can have .roll(average=True) for training
+# TODO need to add dice faces in data/dice.py

@@ -50,3 +50,7 @@ ships["test_ship"]["squadron"] = 1
 ships["test_ship"]["size"] = "small"
 ships["test_ship"]["command"] = 1
 ships["test_ship"]["hull"] = 2
+
+
+# TODO need load_from_RK() here which translates RK list to data above
+# TODO rename this file to ships, so then can make another file called fighters, scenery etc.

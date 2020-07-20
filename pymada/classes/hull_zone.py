@@ -1,5 +1,6 @@
 import pymada
 import pymada.errors
+from pymada.classes.dice import Dice
 
 
 class HullZone:
@@ -10,7 +11,7 @@ class HullZone:
         """Constructor for hull zone
         """
 
-        self.armament = armament
+        self.armament = Dice(armament)
         self.shields = shields
 
         # TODO .fire() method

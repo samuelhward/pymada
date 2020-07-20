@@ -19,13 +19,16 @@ class Ship(PlayerPiece):
 
         """
         self.hull_zone={}
-        for zone in self._ship_data["hull_zones"]:
-            self.hull_zone[zone] = HullZone(
-                armament=self._ship_data["armament"][zone],
-                shields=self._ship_data["shields"][zone],
+        for zone in self._data["hull_zones"]:
+            self.hull_zone[zone] = HullZone( #SO HERE HullZone's armament should be Dice() object
+                armament=self._data["armament"][zone],
+                shields=self._data["shields"][zone],
             )
         """
 
         # TODO add hullzones reading
-        # TODO add command value from lookup
+        # TODO add command_dial list via command value from lookup
         # TODO add movement possibilities from lookup
+        # TODO add speed as current speed
+        # TODO add command token functionality e.g. if brace in Ship.command_tokens and brance is not 'exhausted':
+        # TODO add .move(), which then translates and rotates the attached Base
