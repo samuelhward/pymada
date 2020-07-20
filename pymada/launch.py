@@ -5,5 +5,5 @@ from pymada.classes.piece import Piece
 from pymada.classes.ship import Ship
 
 print("launching...")
-
+pass
 print("finishing...")
