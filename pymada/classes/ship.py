@@ -1,5 +1,6 @@
 import pymada
 import pymada.errors
+import pymada.data.ships
 from pymada.classes.position import Position
 from pymada.classes.player_piece import PlayerPiece
 from pymada.classes.hull_zone import HullZone
@@ -15,9 +16,9 @@ class Ship(PlayerPiece):
 
         super().__init__(model=model, name=name, faction=faction, upgrades=upgrades)
 
-        self._data = pymada.data.ship_data.ships[model] #attach basic data
+        self._data = pymada.data.ships.ships[model]  # attach basic data
 
-        self.hull_zone = {} #add hull-zones
+        self.hull_zone = {}  # add hull-zones
         for zone in self._data["hull_zones"]:
             self.hull_zone[zone] = HullZone(
                 armament=self._data["armament"][zone],
@@ -28,4 +29,3 @@ class Ship(PlayerPiece):
         # TODO add movement possibilities from lookup
         # TODO add speed as current speed
         # TODO add command token functionality e.g. if brace in Ship.command_tokens and brance is not 'exhausted':
-        # TODO add .move(), which then translates and rotates the attached Base

@@ -1,6 +1,6 @@
 import pymada
 import pymada.errors
-import pymada.data.ship_data
+import pymada.data.ships
 from pymada.classes.position import Position
 from pymada.classes.piece import Piece
 from pymada.classes.hull_zone import HullZone

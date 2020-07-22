@@ -4,7 +4,7 @@ import os, sys  # explicitly modify path to avoid having to constantly run setup
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import pymada
 import pymada.errors
-import pymada.data.ship_data
+import pymada.data.ships
 import pymada.classes.ship
 import pymada.classes.hull_zone
 from pymada.classes.base import Base
@@ -14,14 +14,14 @@ from pymada.classes.position import Position
 from pymada.classes.dice import Dice
 
 
-# ship_data tests
+# ships tests
 
 
-def test_ship_data():
+def test_ships():
     """
     """
 
-    assert pymada.data.ship_data.ships["test_ship"]["armament"]["front"] == 1 * "red"
+    assert pymada.data.ships.ships["test_ship"]["armament"]["front"] == 1 * "red"
 
 
 # Ship tests

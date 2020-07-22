@@ -14,9 +14,8 @@ class Piece:
         args:
             model - name of the real plastic model [str]        
         """
-        self.model = model
 
-        # TODO attach Base here
+        self.base=Base()
 
     @property
     def position(self):
