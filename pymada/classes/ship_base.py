@@ -10,7 +10,7 @@ class ShipBase(Base):
     def __init__(self,model=None):
         """Constructor for ShipBase
         """
-        super().__init__(model=model)
+        super().__init__()
 
         self._data = pymada.data.ships.ships[model]  # attach basic data
 

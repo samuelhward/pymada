@@ -13,7 +13,7 @@ class PlayerPiece(Piece):
     def __init__(self, model, name, faction, upgrades=None):
         """Constructor for playable piece
         """
-        super().__init__(model=model)
+        super().__init__()
 
         self.name = name
         self.faction = faction

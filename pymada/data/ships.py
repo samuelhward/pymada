@@ -51,6 +51,15 @@ ships["test_ship"]["size"] = "small"
 ships["test_ship"]["command"] = 1
 ships["test_ship"]["hull"] = 2
 
+bases={}
+for size in ['small','medium','large']: 
+    bases[size]={}
+bases['small']['width']=4.3
+bases['small']['height']=7.2
+bases['medium']['width']=6.3
+bases['medium']['height']=10.35
+bases['large']['width']=7.75
+bases['large']['height']=13.1
 
 # TODO need load_from_RK() here which translates RK list to data above
 # TODO rename this file to ships, so then can make another file called fighters, scenery etc.
