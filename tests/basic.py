@@ -56,7 +56,6 @@ def test_piece_base():
     """
 
     test_piece = Piece()
-    test_piece.base = Base()
 
     with pytest.raises(TypeError):
         test_piece.base = 5.0
