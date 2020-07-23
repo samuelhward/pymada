@@ -30,6 +30,7 @@ def create_ships_template():
     ship_template["arc"] = {}
     ship_template["move"] = {}
     ship_template["upgrades"] = {}
+    ship_template["LoS_dots"] = {}
 
     ship_template["command"] = None
     ship_template["hull"] = None
@@ -56,6 +57,18 @@ ships["test_ship"]["shields"]["front"] = 1
 ships["test_ship"]["shields"]["left"] = 1
 ships["test_ship"]["shields"]["right"] = 1
 ships["test_ship"]["shields"]["rear"] = 1
+ships["test_ship"]["LoS_dots"]["front"] = (
+    bases[ships["test_ship"]["size"]]["height"] / 4.0
+)
+ships["test_ship"]["LoS_dots"]["left"] = (
+    bases[ships["test_ship"]["size"]]["width"] / 4.0
+)
+ships["test_ship"]["LoS_dots"]["right"] = (
+    bases[ships["test_ship"]["size"]]["width"] / 4.0
+)
+ships["test_ship"]["LoS_dots"]["rear"] = (
+    bases[ships["test_ship"]["size"]]["height"] / 4.0
+)
 ships["test_ship"]["armament"]["front"] = 1 * "red"
 ships["test_ship"]["armament"]["left"] = 1 * "blue"
 ships["test_ship"]["armament"]["right"] = 1 * "blue"
@@ -65,12 +78,8 @@ ships["test_ship"]["arc"]["front"] = 2.0 * np.arctan2(
     bases[ships["test_ship"]["size"]]["height"],
 )
 ships["test_ship"]["arc"]["left"] = 180.0 - ships["test_ship"]["arc"]["front"]
-ships["test_ship"]["arc"]["right"] = copy.deepcopy(
-    ships["test_ship"]["arc"]["left"]
-)
-ships["test_ship"]["arc"]["rear"] = copy.deepcopy(
-    ships["test_ship"]["arc"]["front"]
-)
+ships["test_ship"]["arc"]["right"] = copy.deepcopy(ships["test_ship"]["arc"]["left"])
+ships["test_ship"]["arc"]["rear"] = copy.deepcopy(ships["test_ship"]["arc"]["front"])
 ships["test_ship"]["armament"]["anti-squad"] = 1 * "black"
 ships["test_ship"]["move"][1] = [1]
 ships["test_ship"]["move"][2] = [1, 0]
