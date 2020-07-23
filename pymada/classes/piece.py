@@ -12,7 +12,7 @@ class Piece:
         """Constructor for Piece
         """
 
-        self.base=Base()
+        self.base = Base()
 
     @property
     def position(self):

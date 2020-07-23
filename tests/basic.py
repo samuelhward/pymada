@@ -1,5 +1,6 @@
 import pytest
 import os, sys  # explicitly modify path to avoid having to constantly run setup.py to test code
+import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import pymada
@@ -14,7 +15,7 @@ from pymada.classes.position import Position
 from pymada.classes.dice import Dice
 
 
-# ships tests
+# ship data tests
 
 
 def test_ships():
@@ -22,6 +23,17 @@ def test_ships():
     """
 
     assert pymada.data.ships.ships["test_ship"]["armament"]["front"] == 1 * "red"
+    assert (
+        np.sum(
+            np.asarray(
+                [
+                    pymada.data.ships.ships["test_ship"]["arc"][zone]
+                    for zone in pymada.data.ships.ships["test_ship"]["arc"]
+                ]
+            )
+        )
+        == 360
+    )
 
 
 # Ship tests
