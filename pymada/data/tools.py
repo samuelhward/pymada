@@ -20,7 +20,11 @@ maneuver["distance"] = {}
 maneuver["yaw"] = {}
 for speed in [0, 1, 2, 3, 4]:
     maneuver["distance"][speed] = [6.85 for notch in range(speed)]
-    maneuver["yaw"][speed] = [20 for notch in range(speed)]
+    maneuver["yaw"][speed] = [
+        # assuming a symmetrical ruler
+        [20, 20]
+        for notch in range(speed)
+    ]
     for quantity in ["distance", "yaw"]:
         if maneuver[quantity][speed] == []:
             maneuver[quantity][speed] = [0.0]

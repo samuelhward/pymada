@@ -27,7 +27,8 @@ def create_ships_template():
     ship_template["hull_zones"] = {}
     ship_template["shields"] = {}
     ship_template["armament"] = {}
-    ship_template["arc"] = {}
+    ship_template["arc_left"] = {}
+    ship_template["arc_right"] = {}
     ship_template["move"] = {}
     ship_template["upgrades"] = {}
     ship_template["LoS_dots"] = {}
@@ -73,14 +74,38 @@ ships["test_ship"]["armament"]["front"] = 1 * "red"
 ships["test_ship"]["armament"]["left"] = 1 * "blue"
 ships["test_ship"]["armament"]["right"] = 1 * "blue"
 ships["test_ship"]["armament"]["rear"] = 1 * "blue"
-ships["test_ship"]["arc"]["front"] = 2.0 * np.arctan2(
+ships["test_ship"]["arc_left"]["front"] = -np.arctan2(
     bases[ships["test_ship"]["size"]]["width"],
     bases[ships["test_ship"]["size"]]["height"],
 )
-ships["test_ship"]["arc"]["left"] = 180.0 - ships["test_ship"]["arc"]["front"]
-ships["test_ship"]["arc"]["right"] = copy.deepcopy(ships["test_ship"]["arc"]["left"])
-ships["test_ship"]["arc"]["rear"] = copy.deepcopy(ships["test_ship"]["arc"]["front"])
+ships["test_ship"]["arc_right"]["front"] = -1.0 * copy.deepcopy(
+    ships["test_ship"]["arc_left"]["front"]
+)
+
+ships["test_ship"]["arc_left"]["right"] = copy.deepcopy(
+    ships["test_ship"]["arc_right"]["front"]
+)
+ships["test_ship"]["arc_right"]["right"] = (
+    180.0 - ships["test_ship"]["arc_left"]["front"]
+)
+
+ships["test_ship"]["arc_left"]["rear"] = copy.deepcopy(
+    ships["test_ship"]["arc_right"]["right"]
+)
+ships["test_ship"]["arc_right"]["rear"] = 180.0 + copy.deepcopy(
+    ships["test_ship"]["arc_right"]["front"]
+)
+
+ships["test_ship"]["arc_left"]["left"] = copy.deepcopy(
+    ships["test_ship"]["arc_right"]["rear"]
+)
+ships["test_ship"]["arc_right"]["left"] = copy.deepcopy(
+    ships["test_ship"]["arc_left"]["front"]
+)
+
+
 ships["test_ship"]["armament"]["anti-squad"] = 1 * "black"
+ships["test_ship"]["move"][0] = [0]
 ships["test_ship"]["move"][1] = [1]
 ships["test_ship"]["move"][2] = [1, 0]
 ships["test_ship"]["upgrades"]["turbolasers"] = []

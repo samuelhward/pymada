@@ -13,6 +13,7 @@ class Piece:
         """
 
         self.base = Base()
+        self.position = Position()
 
     @property
     def position(self):
@@ -35,3 +36,11 @@ class Piece:
         if not isinstance(base, Base):
             raise TypeError("Piece.base must be of type Base")
         self._base = base
+
+    # TODO make ABC
+    def move(self, x, y, theta):
+        """
+        """
+
+        self.position.translate(x=x, y=y)
+        self.position.rotate(theta=theta)
