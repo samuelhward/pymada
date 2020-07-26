@@ -42,15 +42,28 @@ class Ship(PlayerPiece):
         TODO implement collision checks, move can just call itself recursively with decreasing speed until no overlap event - could raise events.ShipOverlap()?
         """
 
-        """
-        if speed not in self._data["move"]:
-            raise ShipSpeedError
+        if self.speed not in self._data["move"]:
+            raise pymada.errors.ShipSpeedError(
+                self,
+                f"requested speed={self.speed} not available - options = {[speed for speed in self._data['move']]}",
+            )
 
-        if not all([np.abs(clicks[sub_speed])<=self._data["move"][speed][sub_speed] for sub_speed in range(speed)]): #TODO this will need to regard command dial effects
-            raise ShipYawError
+        if not all(
+            [
+                np.abs(clicks[sub_speed]) <= self._data["move"][self.speed][sub_speed]
+                for sub_speed in range(self.speed)
+            ]
+        ):
 
-        assert(len(clicks)>=speed) #clicks can be longer, since if testing for collisoin we just repeat but with speed-=1
-        """
+            # TODO this will need to regard command dial effects
+            raise pymada.errors.ShipYawError(
+                self,
+                f"requested yaw too high in maneuver {[clicks[sub_speed] for sub_speed in range(self.speed)]} - options = {[self._data['move'][self.speed][sub_speed] for sub_speed in range(self.speed)]}",
+            )
+
+        assert (
+            len(clicks) >= speed
+        )  # clicks can be longer, since if testing for collisoin we just repeat but with speed-=1
 
         # loop over sub_moves
         for click_values, sub_move_dist, click_options in zip(
@@ -77,10 +90,5 @@ class Ship(PlayerPiece):
         for zone in self.hull_zones:  # reposition all Ship's HullZones
             self.hull_zones[zone].position = copy.deepcopy(self.position)
 
-        # then decorate with @move_ship which also rotates the HullZones etc, then in decorator just move 'forward' where we then calc x and y translate to feed to position.translate
-
-        # def self.move() - which uses self.position.translate and self.position.rotate, which also rotates HullZones
-
         # TODO add command_dial list via command value from lookup
-        # TODO add movement possibilities from lookup
         # TODO add command token functionality e.g. if brace in Ship.command_tokens and brance is not 'exhausted':

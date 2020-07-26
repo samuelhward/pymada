@@ -8,12 +8,16 @@ class Piece:
     """Base class describing board pieces
     """
 
-    def __init__(self):
+    def __init__(self, name):
         """Constructor for Piece
+
+        args:
+            name - unique string identifier [str]
         """
 
         self.base = Base()
         self.position = Position()
+        self.name = name
 
     @property
     def position(self):
