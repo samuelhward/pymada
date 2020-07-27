@@ -17,3 +17,9 @@ class Squadron(PlayerPiece):
 
         #TODO add unique status
         #TODO make sure all Squadron hullzone arc lengths are 360 degrees
+
+        '''
+        #TODO
+        def move(self, x=0.0, y=0.0, r=None, theta=0.): #do not use self.theta here like a ship! 
+            self.position.translate(self, x=0.0, y=0.0, r=None, theta=0.)
+        '''

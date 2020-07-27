@@ -26,29 +26,40 @@ class PlayerPiece(Piece):
         # TODO add defense tokens from lookup --> needs to be a class e.g. if ship.defense_tokens['brace'][1].is_flipped()
         # TODO add upgrades
 
-    #'''
-    def fire(self,attacking_hull_zone,defending_ship,defending_hull_zone=None):
+    def fire(self, attacking_hull_zone, defender, defending_hull_zone=None):
         """
         """
 
         if not attacking_hull_zone in self.hull_zones:
-            raise ShipHullZoneError(self,f"'{attacking_hull_zone}' hull zone not found in {self.name}")
-            return
+            raise ShipHullZoneError(
+                self, f"'{attacking_hull_zone}' hull zone not found in {self.name}"
+            )
 
-        if not defending_hull_zone in defending_ship.hull_zones:
-            raise ShipHullZoneError(self,f"'{defending_ship.defending_hull_zone}' hull zone not found in {defending_ship.name}")
-            return
+        if not defending_hull_zone in defender.hull_zones:
+            raise ShipHullZoneError(
+                self, f"'{defending_hull_zone}' hull zone not found in {defender.name}",
+            )
 
-        #TODO add NotImplementedError for has_LoS_to
+        if self.hull_zones[attacking_hull_zone].has_LoS_to(
+            defender, defending_hull_zone
+        ):
+            if self.hull_zones[attacking_hull_zone].in_range_of(
+                defender, defending_hull_zone
+            ):
 
-        ShipA.hull_zones['front'].fire(['rear'])
+                attack_pool = self.hull_zones[attacking_hull_zone].fire(
+                    defender, defending_hull_zone
+                )
 
-        if self.hull_zones[attacking_hull_zone].has_LoS_to(defending_ship.hull_zones[defending_hull_zone]):
+                # TODO add various attack stages here e.g. spend defense tokens
 
-            if self.hull_zones[attacking_hull_zone].has_LoS_to(defending_ship.hull_zones[defending_hull_zone]):
-
+            else:
+                raise pymada.errors.NoLoS(
+                    self.hull_zones[attacking_hull_zone],
+                    f"'{attacking_hull_zone}' hull zone of {self.name} is not in range '{defending_hull_zone}' hull zone of {defender.name}",
+                )
         else:
-            raise pymada.errors.NoLoSError 
-
-
-    #'''
+            raise pymada.errors.NotInRange(
+                self.hull_zones[attacking_hull_zone],
+                f"'{attacking_hull_zone}' hull zone of {self.name} has no line of sight to '{defending_hull_zone}' hull zone of {defender.name}",
+            )

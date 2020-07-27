@@ -14,7 +14,7 @@ class PieceException(Exception):
         """
 
         self.message = "".join(
-            f"Error with {piece_type} {piece_instance.name}\n", message
+            (f"Error with {self.piece_type} {piece_instance.name}\n", message)
         )
         super().__init__(self.message)
 
@@ -60,6 +60,11 @@ class HullZoneError(Exception):
         super().__init__(self.message)
 
 
-class NoLoSError(HullZoneError):
+class NoLoS(HullZoneError):
     """Except raised when no line of sight between HullZones
+    """
+
+
+class NotInRange(HullZoneError):
+    """Except raised when HullZone not in range
     """

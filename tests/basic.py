@@ -14,6 +14,7 @@ from pymada.classes.player_piece import PlayerPiece
 from pymada.classes.position import Position
 from pymada.classes.dice import Dice
 
+# TODO separate tests into multiple levels? since all rely on test ship initialisation for example
 
 # ship data tests
 
@@ -29,7 +30,7 @@ def test_ships():
 
 
 def test_Ship():
-    """
+    """Test ship generation
     """
 
     test_ship = pymada.classes.ship.Ship(
@@ -39,7 +40,7 @@ def test_Ship():
 
 
 def test_Ship_move():
-    """
+    """Test basic ship movement including attached hull_zones
     """
 
     test_ship = pymada.classes.ship.Ship(
@@ -50,10 +51,26 @@ def test_Ship_move():
         speed=2,
     )
 
-    test_ship.move(clicks=[0, 1])
+    test_ship.move(clicks=[1, 0])
 
     assert test_ship.position.theta == 20
-    assert test_ship.position.x == 6.85 * 2
+    assert test_ship.hull_zones["front"].position.theta == 20
+
+
+def test_Ship_move_exceptions():
+    """Test basic ship movement exceptions
+    """
+
+    test_ship = pymada.classes.ship.Ship(
+        model="test_ship",
+        name="a ship for testing",
+        faction="neutral",
+        upgrades=None,
+        speed=2,
+    )
+
+    with pytest.raises(pymada.errors.ShipYawError):
+        test_ship.move(clicks=[0, 4])
 
 
 # Piece tests
@@ -63,11 +80,8 @@ def test_piece_position():
     """Check setting a piece's position incorrectly raises TypeError
     """
 
-    test_piece = Piece()
+    test_piece = Piece(name="test piece")
     test_piece.position = Position(x=5.0, y=5.0, theta=0.0)
-
-    with pytest.raises(TypeError):
-        test_piece.position = 5.0
 
 
 # Position tests
@@ -78,7 +92,7 @@ def test_position_rotation():
     """
 
     test_position = Position(x=5.0, y=5.0, theta=0.0)
-    test_position.rotate(theta=10)
+    test_position._rotate(theta=10)
 
     assert test_position.theta == 10.0
 
@@ -87,10 +101,7 @@ def test_piece_base():
     """Check setting a piece's base incorrectly raises TypeError
     """
 
-    test_piece = Piece()
-
-    with pytest.raises(TypeError):
-        test_piece.base = 5.0
+    test_piece = Piece(name="test piece")
 
 
 # Dice tests

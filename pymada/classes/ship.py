@@ -21,10 +21,12 @@ class Ship(PlayerPiece):
 
         self._data = pymada.data.ships.ships[model]  # attach basic data
 
-        self.speed = speed  # XXX should be property - since speed cannot ever go over max([speed for speed in self._data["move"]])
+        # XXX should be property - since speed cannot ever go over max([speed for speed in self._data["move"]])
+        # TODO check here if speed is valid
+        self.speed = speed
 
+        # XXX IN FUTURE ATTACH HULLZONES AND POSITION TO BASE HERE BECAUSE RANGE IS HULLZONE-DEPENDENT
         self.position = Position(x=0.0, y=0.0, theta=0.0)
-
         self.hull_zones = {}  # add hull-zones
         for zone in self._data["hull_zones"]:
             self.hull_zones[zone] = HullZone(
@@ -35,13 +37,21 @@ class Ship(PlayerPiece):
                 arc_right=self._data["arc_right"][zone],
                 position=copy.deepcopy(self.position),
             )
+            self.position.add_observer(
+                self.hull_zones[zone].move
+            )  # attach this hull_zone.move() method as observer of Ship position
 
     def move(self, clicks):
-        """
+        """Ship-specific implementation of move() method
 
+        args:
+        notes:
+            ships in armada move THEN rotate
+        XXX ship moves in armada are actually not from the centre - this is definitely different
         TODO implement collision checks, move can just call itself recursively with decreasing speed until no overlap event - could raise events.ShipOverlap()?
         """
 
+        # first test move is valid
         if self.speed not in self._data["move"]:
             raise pymada.errors.ShipSpeedError(
                 self,
@@ -58,12 +68,11 @@ class Ship(PlayerPiece):
             # TODO this will need to regard command dial effects
             raise pymada.errors.ShipYawError(
                 self,
-                f"requested yaw too high in maneuver {[clicks[sub_speed] for sub_speed in range(self.speed)]} - options = {[self._data['move'][self.speed][sub_speed] for sub_speed in range(self.speed)]}",
+                f"requested yaw too high in maneuver {[clicks[sub_speed] for sub_speed in range(self.speed)]} - maximum = {[self._data['move'][self.speed][sub_speed] for sub_speed in range(self.speed)]}",
             )
 
-        assert (
-            len(clicks) >= speed
-        )  # clicks can be longer, since if testing for collisoin we just repeat but with speed-=1
+        # allow clicks at higher speeds to be specified - if testing for collisions we just repeat but with speed-=1
+        assert len(clicks) >= self.speed
 
         # loop over sub_moves
         for click_values, sub_move_dist, click_options in zip(
@@ -80,15 +89,12 @@ class Ship(PlayerPiece):
             for click_value in range(abs(click_values)):
                 rotation_theta += click_options[click_value] * rotation_dir
 
-            # first translate forward at current theta then rotate to new theta
-            super().move(
-                x=sub_move_dist * np.cos(self.position.theta),
-                y=sub_move_dist * np.sin(self.position.theta),
-                theta=rotation_theta,
+            # first translate forward at current theta then rotate to new theta - this same method will be passed to all observers
+            self.position.move(
+                r=sub_move_dist,
+                theta_translate=self.position.theta,
+                theta_rotate_last=rotation_theta,
             )
-
-        for zone in self.hull_zones:  # reposition all Ship's HullZones
-            self.hull_zones[zone].position = copy.deepcopy(self.position)
 
         # TODO add command_dial list via command value from lookup
         # TODO add command token functionality e.g. if brace in Ship.command_tokens and brance is not 'exhausted':
