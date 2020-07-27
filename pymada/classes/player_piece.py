@@ -17,6 +17,7 @@ class PlayerPiece(Piece):
 
         self.faction = faction
         self._upgrades = upgrades
+        self.hull_zones = None
 
         # TODO add points as property which, when accessed, total points of the model using helper function def calculate_points()
 
@@ -30,16 +31,20 @@ class PlayerPiece(Piece):
         """
         """
 
+        if not attacking_hull_zone in self.hull_zones:
+            raise ShipHullZoneError(self,f"'{attacking_hull_zone}' hull zone not found in {self.name}")
+            return
+
+        if not defending_hull_zone in defending_ship.hull_zones:
+            raise ShipHullZoneError(self,f"'{defending_ship.defending_hull_zone}' hull zone not found in {defending_ship.name}")
+            return
+
+        #TODO add NotImplementedError for has_LoS_to
 
         ShipA.hull_zones['front'].fire(['rear'])
 
-
-        #TODO check attacking_hull_zone and defending_hull_zone are valid here
-
-        #TODO add NotImplementedError for has_LoS_to
         if self.hull_zones[attacking_hull_zone].has_LoS_to(defending_ship.hull_zones[defending_hull_zone]):
 
-    
             if self.hull_zones[attacking_hull_zone].has_LoS_to(defending_ship.hull_zones[defending_hull_zone]):
 
         else:

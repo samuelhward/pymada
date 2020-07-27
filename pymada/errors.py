@@ -43,6 +43,11 @@ class ShipYawError(ShipException):
     """
 
 
+class ShipHullZoneError(ShipException):
+    """Except raised for errors with Ship HullZones 
+    """
+
+
 class HullZoneError(Exception):
     """Except raised by HullZone
     """
@@ -55,6 +60,6 @@ class HullZoneError(Exception):
         super().__init__(self.message)
 
 
-class NoLosError(HullZoneError):
+class NoLoSError(HullZoneError):
     """Except raised when no line of sight between HullZones
     """
