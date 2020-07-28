@@ -28,3 +28,27 @@ class Piece:
 
         # XXX IN FUTURE MOVE BASE HERE
         self.position.move(*args, **kwargs)
+
+    # Define multiple dispatch methods for targeting here (because for example LoS measured to objectives)
+
+    def LoS_to(self, defender, *args, **kwargs):
+        """
+        """
+        pass
+
+    def LoS_from(self, attacker, *args, **kwargs):
+        """
+        """
+        return True
+
+    def range_to(self, defender, *args, **kwargs):
+        """
+        """
+
+        pass
+
+    def range_from(self, attacker, *args, **kwargs):
+        """
+        """
+
+        return True

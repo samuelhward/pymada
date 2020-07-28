@@ -7,14 +7,14 @@ class PieceException(Exception):
     """Except raised for errors in Piece 
     """
 
-    piece_type = "Piece"
+    PIECE_TYPE = "Piece"
 
     def __init__(self, piece_instance, message):
         """Include extra name information for identifying offending instance
         """
 
         self.message = "".join(
-            (f"Error with {self.piece_type} {piece_instance.name}\n", message)
+            (f"Error with {self.PIECE_TYPE} named '{piece_instance.name}'\n", message)
         )
         super().__init__(self.message)
 
@@ -23,14 +23,14 @@ class PlayerPieceException(PieceException):
     """Except raised for errors in PlayerPiece 
     """
 
-    piece_type = "PlayerPiece"
+    PIECE_TYPE = "PlayerPiece"
 
 
 class ShipException(PlayerPieceException):
     """Except raised for errors in Ship 
     """
 
-    piece_type = "Ship"
+    PIECE_TYPE = "Ship"
 
 
 class ShipSpeedError(ShipException):

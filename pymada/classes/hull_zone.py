@@ -11,37 +11,47 @@ class HullZone:
     """Class describing a hull zone
     """
 
-    def __init__(self, armament, shields, LoS_dot, arc_left, arc_right, position):
+    def __init__(self, armament, shields, LoS_dot, arc_left, arc_right):
         """Constructor for hull zone
 
         args:
             armament - battery armament [str or Dice]
             shields - XXX
-            LoS_dot - distance from HullZone.position to line of sight dot[float, cm]
             arc_left - angle describing left-most arc edge relative to position.theta [float, deg]
             arc_right - angle describing right-most arc edge relative to position.theta [float, deg]
+            LoS_dot_position - position of line-of-sight dot [Position]
+        attr:
             position - position of arc origin [Position] 
+            _LoS_dot_radius - relative distance from HullZone.position to line of sight dot[float, cm]
         """
 
         self.armament = Dice(armament)
         self.shields = shields
-        self.LoS_dot = LoS_dot
         self.arc_left, self.arc_right = arc_left, arc_right
-        self.position = position
-        # TODO add arc length
-        # TODO add hull_zone position (which is where the edges converge i.e. the centre of the model's base)
-        # TODO add theta --> from arc length and theta can then calculate arcs
+        self.position = Position(x=0.0, y=0.0, theta=0.0)
+        self._LoS_dot_radius = LoS_dot
+
+        self.LoS_dot_position = Position(
+            x=self.position.x
+            + self._LoS_dot_radius
+            * np.cos(
+                (self.position.theta + (arc_left + arc_right) / 2.0) * np.pi / 180
+            ),
+            y=self.position.y
+            + self._LoS_dot_radius
+            * np.sin(
+                (self.position.theta + (arc_left + arc_right) / 2.0) * np.pi / 180
+            ),
+        )
+
+        self.position.add_observer(self.LoS_dot_position.move)
 
     def move(self, *args, **kwargs):
         """
         """
 
-        # first move the HullZone position
+        # move the HullZone position and watchers
         self.position.move(*args, **kwargs)
-
-        # then recalculate the x,y coordinates of the LoS dot regardless of move method above
-        self.LoS_dot_x = self.position.x + self.LoS_dot * np.cos(self.position.theta)
-        self.LoS_dot_y = self.position.y + self.LoS_dot * np.sin(self.position.theta)
 
     def has_LoS_to(defender, defending_hull_zone):
         """
@@ -67,8 +77,16 @@ class HullZone:
         # TODO proper method here
 
         distance_between_LoS_dots = np.sqrt(
-            (self.LoS_dot_x - defender.hull_zones[defending_hull_zone].LoS_dot_x) ** 2
-            + (self.LoS_dot_y - defender.hull_zones[defending_hull_zone].LoS_dot_y) ** 2
+            (
+                self.LoS_dot_position.x
+                - defender.hull_zones[defending_hull_zone].LoS_dot_position.x
+            )
+            ** 2
+            + (
+                self.LoS_dot_position.y
+                - defender.hull_zones[defending_hull_zone].LoS_dot_position.y
+            )
+            ** 2
         )
 
         colours = {
@@ -81,3 +99,5 @@ class HullZone:
     def fire(defender, defending_hull_zone):
         """
         """
+
+        # XXX create dice pool object here
