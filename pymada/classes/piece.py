@@ -8,39 +8,48 @@ class Piece:
     """Base class describing board pieces
     """
 
-    def __init__(self):
+    def __init__(self, name):
         """Constructor for Piece
+
+        args:
+            name - unique string identifier [str]
         """
 
+        self.name = name
         self.base = Base()
         self.position = Position()
+        self.position.add_observer(
+            # add base as observer
+            self.base.move
+        )
 
-    @property
-    def position(self):
-        return self._position
-
-    @position.setter
-    def position(self, position):
-
-        if not isinstance(position, Position):
-            raise TypeError("Piece.position must be of type Position")
-        self._position = position
-
-    @property
-    def base(self):
-        return self._base
-
-    @base.setter
-    def base(self, base):
-
-        if not isinstance(base, Base):
-            raise TypeError("Piece.base must be of type Base")
-        self._base = base
-
-    # TODO make ABC
-    def move(self, x, y, theta):
+    # XXX make ABC?
+    def move(self, *args, **kwargs):
         """
         """
 
-        self.position.translate(x=x, y=y)
-        self.position.rotate(theta=theta)
+        self.position.move(*args, **kwargs)
+
+    # Define multiple dispatch methods for targeting here (because for example LoS measured to objectives)
+    # XXX MAKE ABCs?
+    def LoS_to(self, defender, *args, **kwargs):
+        """
+        """
+        pass
+
+    def LoS_from(self, attacker, *args, **kwargs):
+        """
+        """
+        return True
+
+    def range_to(self, defender, *args, **kwargs):
+        """
+        """
+
+        pass
+
+    def range_from(self, attacker, *args, **kwargs):
+        """
+        """
+
+        return True

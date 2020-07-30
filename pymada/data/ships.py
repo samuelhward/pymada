@@ -8,6 +8,8 @@ from pymada.classes.dice import Dice
 bases = {}
 for size in ["small", "medium", "large"]:
     bases[size] = {}
+    bases[size]["outline"] = {}
+
 bases["small"]["width"] = 4.3
 bases["small"]["height"] = 7.2
 bases["medium"]["width"] = 6.3
@@ -15,10 +17,20 @@ bases["medium"]["height"] = 10.35
 bases["large"]["width"] = 7.75
 bases["large"]["height"] = 13.1
 
+# all bases in game described by outline - essentially points defining the poly
+# here calculate outline as corner points of base about origin
+for size in bases.keys():
+    width = bases[size]["width"]
+    height = bases[size]["height"]
+    outline_x = []
+    outline_y = []
+    for quadrant in [[1.0, 1.0], [1.0, -1.0], [-1.0, -1.0], [-1.0, 1.0]]:
+        outline_x.append(0.0 + quadrant[0] * width / 2.0)
+        outline_y.append(0.0 + quadrant[1] * height / 2.0)
+    bases[size]["outline"]["x"] = outline_x
+    bases[size]["outline"]["y"] = outline_y
 
-ships = {}
-
-
+# function for creating template defining ship to be stored in module ship dict
 def create_ships_template():
     """ Helper function to initialise ship information
     """
@@ -42,6 +54,8 @@ def create_ships_template():
 
     return ship_template
 
+
+ships = {}
 
 # define a test ship
 
