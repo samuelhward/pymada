@@ -27,11 +27,11 @@ class Ship(PlayerPiece):
 
         self.hull = self._data["hull"]
         self.damage_cards = []
-        self.is_destroyed = False
 
         # XXX should be property - since speed cannot ever go over max([speed for speed in self._data["move"]])
         # TODO check here if speed is valid
-        self.speed = speed
+        self.speed = speed  # XXX for a squadron this is move range
+
         self.base = Base(
             outline_points_x=pymada.data.ships.bases[self._data["size"]]["outline"][
                 "x"
@@ -73,6 +73,10 @@ class Ship(PlayerPiece):
         """
         return len(self.damage_cards)
 
+    @property
+    def is_destroyed(self):
+        return True if self.damage >= self.hull else False
+
     def create_attack_pool(self, attacking_hull_zone, *args, **kwargs):
         """Return deep copy of attacking Dice armament
         """
@@ -95,7 +99,8 @@ class Ship(PlayerPiece):
         damage_remaining = damage - self.hull_zones[defending_hull_zone].shields
         self.hull_zones[defending_hull_zone].shields -= damage
         if damage_remaining > 0:
-            self.damage_cards.append("card")
+            for card in range(damage_remaining):
+                self.damage_cards.append("card")
 
     def move(self, clicks):
         """Ship-specific implementation of move() method - translates list of clicks to cartesian transforms

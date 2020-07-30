@@ -23,6 +23,11 @@ class Piece:
             self.base.move
         )
         self._damage = 0
+        self._is_destroyed = False
+
+    @property
+    def is_destroyed(self):
+        return self._is_destroyed
 
     @property
     def damage(self):
