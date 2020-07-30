@@ -60,12 +60,12 @@ ships = {}
 # define a test ship
 
 ships["test_ship"] = create_ships_template()
-ships["test_ship"]["engineering"] = 2
-ships["test_ship"]["squadron"] = 1
 ships["test_ship"]["size"] = "small"
-ships["test_ship"]["command"] = 1
 ships["test_ship"]["hull"] = 2
 ships["test_ship"]["points"] = 100
+ships["test_ship"]["command"] = 1
+ships["test_ship"]["engineering"] = 2
+ships["test_ship"]["squadron"] = 1
 ships["test_ship"]["defense_tokens"] = ["brace"]
 ships["test_ship"]["hull_zones"] = {"front", "left", "right", "rear"}
 ships["test_ship"]["shields"]["front"] = 1

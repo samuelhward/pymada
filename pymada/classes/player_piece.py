@@ -1,6 +1,7 @@
 import pymada
 import pymada.errors
 import pymada.data.ships
+from pymada.classes.dice import Dice
 from pymada.classes.position import Position
 from pymada.classes.piece import Piece
 from pymada.classes.hull_zone import HullZone
@@ -10,6 +11,7 @@ from pymada.classes.hull_zone import HullZone
 # TODO add speed value from lookup
 # TODO add defense tokens from lookup --> needs to be a class e.g. if ship.defense_tokens['brace'][1].is_flipped()
 # TODO add upgrades
+
 
 class PlayerPiece(Piece):
     """Class describing playable piece
@@ -36,20 +38,30 @@ class PlayerPiece(Piece):
             if attack_range:
                 attack = self.create_attack_pool(*args, **kwargs)
 
-                #XXX more modifications here
+                # XXX more modifications here
 
                 attack.roll(attack_range)
 
-                #XXX even more modifications here
+                # XXX even more modifications here
 
-                #XXX AT THIS POINT CHECK DEFENDING HULL ZONE IN ENEMY SHIP AND TAKE OFF SHIELDS ETC.
-                #defender.suffer(damage=attack.damage_normal+attack.damage_critical,*args,**kwargs) 
+                # XXX AT THIS POINT CHECK DEFENDING HULL ZONE IN ENEMY SHIP AND TAKE OFF SHIELDS ETC.
 
-            # TODO add various attack stages here e.g. spend defense tokens
+                # TODO add various attack stages here e.g. spend defense tokens
+
+                defender.suffer(
+                    damage=attack.damage_normal + attack.damage_critical,
+                    *args,
+                    **kwargs
+                )
+
+                if defender.damage >= defender.hull:
+                    defender.is_destroyed = True
+
+                # XXX add logger here or ShipDestroyedEvent(exception) ?
 
     # TODO make ABC
     def create_attack_pool(*args, **kwargs):
-        """
+        """Return deep copy of attacking Dice armament
         """
 
-        return None
+        return Dice()

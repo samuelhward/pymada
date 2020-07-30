@@ -76,7 +76,9 @@ class Dice:
         self._dice["blue"] = 0
         self._dice["black"] = 0
 
-        if len(dice) is 1:  # *dice is string
+        if len(dice) is 0:
+            pass
+        elif len(dice) is 1:  # *dice is string
             for colour in self._dice.keys():
                 self[colour] += dice[0].count(colour)
         else:  # *dice is list *args of Dice objects
@@ -120,7 +122,9 @@ class Dice:
         for colour in self.colours | other_dice.colours:
             pool.results[colour] = self.results[colour] + other_dice.results[colour]
 
-        pool.has_rolled=True if (self.has_rolled) or (other_dice.has_rolled) else False
+        pool.has_rolled = (
+            True if (self.has_rolled) or (other_dice.has_rolled) else False
+        )
 
         return pool
 

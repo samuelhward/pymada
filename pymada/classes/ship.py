@@ -25,6 +25,10 @@ class Ship(PlayerPiece):
 
         self._data = pymada.data.ships.ships[model]  # attach basic data
 
+        self.hull = self._data["hull"]
+        self.damage_cards = []
+        self.is_destroyed = False
+
         # XXX should be property - since speed cannot ever go over max([speed for speed in self._data["move"]])
         # TODO check here if speed is valid
         self.speed = speed
@@ -62,6 +66,36 @@ class Ship(PlayerPiece):
             # add base as observer
             self.base.move
         )
+
+    @property
+    def damage(self):
+        """Ship damage defined by number of damage cards
+        """
+        return len(self.damage_cards)
+
+    def create_attack_pool(self, attacking_hull_zone, *args, **kwargs):
+        """Return deep copy of attacking Dice armament
+        """
+
+        # XXX this needs to be multiple dispatch for anti squad
+        attack_pool = copy.deepcopy(self.hull_zones[attacking_hull_zone].armament)
+
+        # XXX do attacking dice mods here
+
+        return attack_pool
+
+    def suffer(self, damage, defending_hull_zone, *args, **kwargs):
+        """
+
+        args:
+            damage - 
+            defending_hull_zone - 
+        """
+
+        damage_remaining = damage - self.hull_zones[defending_hull_zone].shields
+        self.hull_zones[defending_hull_zone].shields -= damage
+        if damage_remaining > 0:
+            self.damage_cards.append("card")
 
     def move(self, clicks):
         """Ship-specific implementation of move() method - translates list of clicks to cartesian transforms
@@ -199,7 +233,7 @@ class Ship(PlayerPiece):
             )
 
         """
-        return 'red' #or None if not in range
+        return "red"  # or None if not in range
 
     def range_from(self, attacker, defending_hull_zone, *args, **kwargs):
         """
@@ -210,14 +244,3 @@ class Ship(PlayerPiece):
         if LOGIC
         """
         return True
-
-    def create_attack_pool(self, attacking_hull_zone, *args, **kwargs):
-        """
-        """
-
-        # XXX this needs to be multiple dispatch for anti squad
-        attack_pool = self.hull_zones[attacking_hull_zone].roll()
-
-        # XXX do attacking dice mods here
-
-        return attack_pool

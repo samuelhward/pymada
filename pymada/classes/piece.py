@@ -22,6 +22,17 @@ class Piece:
             # add base as observer
             self.base.move
         )
+        self._damage = 0
+
+    @property
+    def damage(self):
+        """
+
+        notes:
+            child classes may define damage in different ways so define as property 
+        """
+
+        return self._damage
 
     # XXX make ABC?
     def move(self, *args, **kwargs):
@@ -29,6 +40,12 @@ class Piece:
         """
 
         self.position.move(*args, **kwargs)
+
+    def suffer(*args, **kwargs):
+        """
+        """
+
+        pass
 
     # Define multiple dispatch methods for targeting here (because for example LoS measured to objectives)
     # XXX MAKE ABCs?
