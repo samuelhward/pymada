@@ -75,6 +75,9 @@ class Ship(PlayerPiece):
 
     @property
     def is_destroyed(self):
+
+        # XXX add logger here or ShipDestroyedEvent(exception) ?
+
         return True if self.damage >= self.hull else False
 
     def create_attack_pool(self, attacking_hull_zone, *args, **kwargs):

@@ -7,7 +7,6 @@ from pymada.classes.piece import Piece
 from pymada.classes.hull_zone import HullZone
 
 # TODO add points as property which, when accessed, total points of the model using helper function def calculate_points()
-# TODO add speed value from lookup
 # TODO add defense tokens from lookup --> needs to be a class e.g. if ship.defense_tokens['brace'][1].is_flipped()
 # TODO add upgrades
 
@@ -43,8 +42,6 @@ class PlayerPiece(Piece):
 
                 # XXX even more modifications here
 
-                # XXX AT THIS POINT CHECK DEFENDING HULL ZONE IN ENEMY SHIP AND TAKE OFF SHIELDS ETC.
-
                 # TODO add various attack stages here e.g. spend defense tokens
 
                 defender.suffer(
@@ -52,8 +49,6 @@ class PlayerPiece(Piece):
                     *args,
                     **kwargs
                 )
-
-                # XXX add logger here or ShipDestroyedEvent(exception) ?
 
     # TODO make ABC
     def create_attack_pool(*args, **kwargs):
