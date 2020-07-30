@@ -15,22 +15,23 @@ class Piece:
             name - unique string identifier [str]
         """
 
-        self.base = Base()
-        self.position = (
-            Position()
-        )  # XXX THIS SHOULD BE IN BASE - AND ALL SUBCLASSES SHOULD USE BASE.POSITION
         self.name = name
+        self.base = Base()
+        self.position = Position()
+        self.position.add_observer(
+            # add base as observer
+            self.base.move
+        )
 
     # XXX make ABC?
     def move(self, *args, **kwargs):
         """
         """
 
-        # XXX IN FUTURE MOVE BASE HERE
         self.position.move(*args, **kwargs)
 
     # Define multiple dispatch methods for targeting here (because for example LoS measured to objectives)
-
+    # XXX MAKE ABCs?
     def LoS_to(self, defender, *args, **kwargs):
         """
         """

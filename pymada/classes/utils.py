@@ -8,8 +8,8 @@ def rotate_2D(x, y, theta):
     """Implement 2D rotation matrix 
     
     args:
-        x - x vector to point [float/array,cm]
-        y - y vector to point [float/array,cm]
+        x - x vector from centre of rotation to point [float/array,cm]
+        y - y vector from centre of rotation to point [float/array,cm]
         theta - rotation magnitude [float,deg]
     """
 

@@ -9,12 +9,15 @@ from pymada.classes.position import Position
 from pymada.classes.player_piece import PlayerPiece
 from pymada.classes.hull_zone import HullZone
 
+# TODO add command_dial list via command value from lookup
+# TODO add command token functionality e.g. if brace in Ship.command_tokens and brance is not 'exhausted':
+
 
 class Ship(PlayerPiece):
     """Class describing a Ship
     """
 
-    def __init__(self, model, name, faction, speed=0.0, upgrades=None):
+    def __init__(self, model, name, faction, speed=0, upgrades=None):
         """Constructor for Ship
         """
 
@@ -25,7 +28,14 @@ class Ship(PlayerPiece):
         # XXX should be property - since speed cannot ever go over max([speed for speed in self._data["move"]])
         # TODO check here if speed is valid
         self.speed = speed
-        self.base = Base(self._data["size"])
+        self.base = Base(
+            outline_points_x=pymada.data.ships.bases[self._data["size"]]["outline"][
+                "x"
+            ],
+            outline_points_y=pymada.data.ships.bases[self._data["size"]]["outline"][
+                "y"
+            ],
+        )
 
         self.position = Position(x=0.0, y=0.0, theta=0.0)
 
@@ -54,13 +64,13 @@ class Ship(PlayerPiece):
         )
 
     def move(self, clicks):
-        """Ship-specific implementation of move() method
+        """Ship-specific implementation of move() method - translates list of clicks to cartesian transforms
 
         args:
         notes:
             ships in armada move THEN rotate
-        XXX ship moves in armada are actually not from the centre - this is definitely different
-        TODO implement collision checks, move can just call itself recursively with decreasing speed until no overlap event - could raise events.ShipOverlap()?
+        XXX add ship rotations from corner - .base.corner below as centre_x_rotate_last,centre_y_rotate_last
+        XXX TODO implement collision checks, move can just call itself recursively with decreasing speed until no overlap event - could raise events.ShipOverlap()?
         """
 
         # first test move is valid
@@ -115,17 +125,12 @@ class Ship(PlayerPiece):
                 centre_y_rotate_last=self.position.y,
             )
 
-
-'''
-
-
-
-    def LoS_to(self, defender, *args, **kwargs):
+    def LoS_to(self, defender, attacking_hull_zone, *args, **kwargs):
         """
         """
 
-        #xxx this will FIRST need to check the enemy base is within our arc THEN check we don't cross any enemy hull zones for example
-
+        # XXX this will need to check the enemy base is within our arc and check we are not obstructed
+        """
         attacking_hull_zone = kwargs.get("attacking_hull_zone", None)
 
         if not attacking_hull_zone in self.hull_zones:
@@ -151,12 +156,18 @@ class Ship(PlayerPiece):
             )
 
             return False
+        """
+        return True
 
-
-    def LoS_from(self, attacker, *args, **kwargs):
+    def LoS_from(self, attacker, defending_hull_zone, *args, **kwargs):
         """
         """
 
+        # XXX attacker must have specified defending_hull_zone since they are attacking us, a ship
+
+        # XXX check enemy LoS does not overlap our hull zone
+
+        """
         if defending_hull_zone:
             if not defending_hull_zone in defender.hull_zones:
                 raise ShipHullZoneError(
@@ -169,41 +180,44 @@ class Ship(PlayerPiece):
 
         #XXX at this point we will need to check line from enemy does not cross our hullzone lines 
         if LOGIC
+        """
+
         return True
 
-    def range_to(self, defender, *args, **kwargs):
+    def range_to(self, defender, attacking_hull_zone, *args, **kwargs):
         """
         """
-        #XXX this will need to return the point on the base closest to defender, then call defender.range_from and find distance between
 
-        if LOGIC and enemy.LoS_from(self, *args, **kwargs)
+        # XXX this will need to return the point on the base closest to defender, then call defender.range_from and find distance between
+
+        """
+        if LOGIC and enemy.range_from(self, *args, **kwargs)
 
             raise pymada.errors.NotInRange(
                 self.hull_zones[attacking_hull_zone],
                 f"'{attacking_hull_zone}' hull zone of {self.name} has no line of sight to '{defending_hull_zone}' hull zone of {defender.name}",
             )
 
-        return True
+        """
+        return 'red' #or None if not in range
 
-    def range_from(self, attacker, *args, **kwargs):
+    def range_from(self, attacker, defending_hull_zone, *args, **kwargs):
         """
         """
 
-        #XXX at this point we will need to yield the point on our base closest to enemy ship
-
+        # XXX at this point we will need to yield the point on our base within our hull zone closest to enemy ship
+        """
         if LOGIC
+        """
         return True
 
-    def create_attack_pool(self, attacking_hull_zone):
+    def create_attack_pool(self, attacking_hull_zone, *args, **kwargs):
         """
         """
 
-        #XXX this needs to be multiple dispatch for anti squad
+        # XXX this needs to be multiple dispatch for anti squad
         attack_pool = self.hull_zones[attacking_hull_zone].roll()
 
+        # XXX do attacking dice mods here
+
         return attack_pool
-
-
-        # TODO add command_dial list via command value from lookup
-        # TODO add command token functionality e.g. if brace in Ship.command_tokens and brance is not 'exhausted':
-'''

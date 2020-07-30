@@ -1,3 +1,8 @@
+class DiceException(Exception):
+    """Except raised for errors with Dice
+    """
+
+
 class PositionException(Exception):
     """Except raised for errors in Piece 
     """
