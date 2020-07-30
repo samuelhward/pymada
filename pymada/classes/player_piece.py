@@ -43,7 +43,7 @@ class PlayerPiece(Piece):
                 #XXX even more modifications here
 
                 #XXX AT THIS POINT CHECK DEFENDING HULL ZONE IN ENEMY SHIP AND TAKE OFF SHIELDS ETC.
-                defender.suffer(damage=attack.damage_normal+attack.damage_critical,*args,**kwargs) 
+                #defender.suffer(damage=attack.damage_normal+attack.damage_critical,*args,**kwargs) 
 
             # TODO add various attack stages here e.g. spend defense tokens
 
@@ -51,7 +51,5 @@ class PlayerPiece(Piece):
     def create_attack_pool(*args, **kwargs):
         """
         """
-
-        attack_range
 
         return None
