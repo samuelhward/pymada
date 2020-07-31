@@ -3,6 +3,7 @@ import os, sys  # explicitly modify path to avoid having to constantly run setup
 import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import pymada
 import pymada.errors
 import pymada.data.ships
@@ -10,6 +11,7 @@ import pymada.classes.ship
 import pymada.classes.hull_zone
 import pymada.classes.utils
 from pymada.classes.base import Base
+from pymada.classes.board import Board
 from pymada.classes.piece import Piece
 from pymada.classes.player_piece import PlayerPiece
 from pymada.classes.position import Position
@@ -33,6 +35,14 @@ def test_rotate_2D():
 
     assert round(x, 0) == -1
     assert round(y, 0) == 1
+
+
+def test_board():
+    """
+    """
+
+    test_board = Board()
+    assert test_board.width == Board.PLAY_AREA_WIDTH
 
 
 # ship data tests
