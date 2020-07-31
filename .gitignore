@@ -34,3 +34,6 @@ pymada.egg-info/
 
 #virtualenv stuff
 venv/
+
+#PDFs
+*.pdf
