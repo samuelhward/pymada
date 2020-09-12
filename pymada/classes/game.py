@@ -146,8 +146,9 @@ class Game:
                     }
                     enemy_targets = {ship for ship in self.board.ships} - allied_targets
 
+                    #XXX add more information here to tell player what they are selecting
                     ship_to_activate_name = self.players[current_player.name].choose(
-                        Decision("select_friendly_piece", options=player_ships)
+                        Decision("select_piece", options=player_ships)
                     )
 
                     self.board.ships[ship_to_activate_name].activate()
@@ -157,8 +158,10 @@ class Game:
                     # shoot
                     # XXX ADD CATCHING HERE IF CHOOSES A SHIP THEY CANNOT FIRE ON FOR EXAMPLE i.e. IF FIRE RAISES EXCEPTION
                     # XXX what if firing on squadron?
+                    
+                    #XXX add more information here to tell player what they are selecting
                     target_piece = self.players[current_player.name].choose(
-                        Decision("select_enemy_piece", options=enemy_targets)
+                        Decision("select_piece", options=enemy_targets)
                     )
 
                     attacking_hull_zone = self.players[current_player.name].choose(

@@ -13,8 +13,7 @@ def Decision(name, *args, **kwargs):
 
     DECISIONS = {}
     DECISIONS["select_player"] = DecideSelectPlayer
-    DECISIONS["select_friendly_piece"] = DecideFriendlyPiece
-    DECISIONS["select_enemy_piece"] = DecideEnemyPiece
+    DECISIONS["select_piece"] = DecidePiece
     DECISIONS["clicks_to_move"] = DecideClicksToMove
     DECISIONS["select_hull_zone"] = DecideHullZone
     DECISIONS["test_choice"] = BaseDecision
@@ -52,11 +51,11 @@ class BaseDecision:
 
         raise NotImplmentedError
 
-    def parse_choice_test(self,choice):
+    def parse_choice_test(self, choice):
         """
         """
 
-        return str(choice[:-1])+'!'
+        return str(choice[:-1]) + "!"
 
 
 class DecideSelectPlayer(BaseDecision):
@@ -73,11 +72,11 @@ class DecideSelectPlayer(BaseDecision):
         return choice
 
 
-class DecideFriendlyPiece(BaseDecision):
+class DecidePiece(BaseDecision):
     """
     """
 
-    MESSAGE = "please select a friendly piece\n"
+    MESSAGE = "please select a piece\n"
 
     def parse_choice_human(self, choice):
         """
@@ -86,19 +85,7 @@ class DecideFriendlyPiece(BaseDecision):
         # no parsing necessary since user inputs ship name as string
         return choice
 
-class DecideEnemyPiece(BaseDecision):
-    """
-    """
 
-    MESSAGE = "please choose an enemy piece\n"
-
-    def parse_choice_human(self, choice):
-        """
-        """
-
-        # no parsing necessary since user inputs enemy piece name as string
-        return choice
-        
 class DecideClicksToMove(BaseDecision):
     """
     """
@@ -112,6 +99,7 @@ class DecideClicksToMove(BaseDecision):
         # TODO CHECK CHOICE HERE - IF NOT CORRECT RAISE SOMETHING LIKE PYMADA.USERINPUTERROR
 
         return ast.literal_eval(choice)
+
 
 class DecideHullZone(BaseDecision):
     """
