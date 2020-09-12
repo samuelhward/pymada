@@ -4,7 +4,7 @@
 
 - 6 rounds max
 - S, S' ships per team
-- F, F' fighters per team
+- F, F' squadrons per team
 - Total number of possible moves in typical discretised 6-turn game ~ 5e111 (see Appendix 1)
 - Branching factor per turn ~ 10^19
 
@@ -22,7 +22,7 @@
 - Terrain set up
     - players alternate placing scenery
 - Unit placement
-    - players alternate placing ships or groups of 3 fighters within designated area
+    - players alternate placing ships or groups of 3 squadrons within designated area
     - speed of ship is chosen
 - All command dials chosen
 
@@ -61,11 +61,11 @@
         - command tokens
         - defense token states
 
-## Fighters
+## squadrons
 
 - continuous circular range
 - move or shoot (both if activated by squadron dial)
-- fighter information:
+- squadron information:
     - anti-ship armament
     - anti-squadron armament
     - defense tokens if any

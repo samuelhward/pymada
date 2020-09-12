@@ -1,16 +1,22 @@
 """Game board
 """
 import sys
-import os, sys  # explicitly modify path to avoid having to constantly run setup.py to test code
+import os, sys
 
 import pymada
 import pymada.errors
 import pymada.data.tools
 from pymada.classes.position import Position
+from pymada.classes.ship import Ship
 
 
 class Board:
     """Class describing the game board and all the pieces on it
+    
+    att:
+        pieces - names of all pieces on board [list(str)]   
+    notes:
+        board centre at 0,0         
     """
 
     PLAY_AREA_WIDTH = 6.0 * 30.48  # feet to cm
@@ -53,30 +59,41 @@ class Board:
             )
 
         # add pieces
-        self.ships = []
+        self.piece_names = []
         self.obstacles = []
+        self.ships = {}
 
-    def add_ships(self, *ships):
+    def add_ship(
+        self,
+        player_name,
+        model,
+        name,
+        faction,
+        speed=0,
+        upgrades=None,
+        x=0.0,
+        y=0.0,
+        theta=0.0,
+    ):
         """
         args:
             ships - ship instances to add to board *[Ship]
         """
 
-        self.ships.extend(ships)
+        ship = Ship(
+            player_name=player_name,
+            model=model,
+            name=name,
+            faction=faction,
+            speed=speed,
+            upgrades=upgrades,
+            x=x,
+            y=y,
+            theta=theta,
+        )
 
-    def remove_ship(self, *names):
-        """
-        args:
-            names - ship string names to remove from board *[str]
-        """
-
-        ships_to_remove = []
-        for name in names:
-            for counter, ship in enumerate(self.ships):
-                if ship.name is name:
-                    ships_to_remove.append(counter)
-        for ship in ships_to_remove.reverse():
-            del self.ships[counter]
+        self.ships[ship.name] = ship
+        self.piece_names.append(name)
 
     def add_obstacles(self, *obstacles):
         """
@@ -84,4 +101,6 @@ class Board:
             obstacles - obstacle instances to add to board *[Obstacle]
         """
 
-        self.obstacles.extend(obstacles)
+        for obstacle in obstacles:
+            self.piece_names.append(obstacle.name)
+            self.obstacles.extend(obstacle)

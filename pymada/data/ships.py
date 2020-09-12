@@ -48,7 +48,7 @@ def create_ships_template():
     ship_template["command"] = None
     ship_template["hull"] = None
     ship_template["points"] = None
-    ship_template["size"] = None  # small, medium, large, giant, custom
+    ship_template["size"] = None  # small, medium, large, custom
     ship_template["engineering"] = None
     ship_template["squadron"] = None
 
@@ -120,8 +120,8 @@ ships["test_ship"]["arc_right"]["left"] = copy.deepcopy(
 
 ships["test_ship"]["armament"]["anti-squad"] = 1 * "black"
 ships["test_ship"]["move"][0] = [0]
-ships["test_ship"]["move"][1] = [1]
-ships["test_ship"]["move"][2] = [1, 0]
+ships["test_ship"]["move"][1] = [0]
+ships["test_ship"]["move"][2] = [0, 1]
 ships["test_ship"]["upgrades"]["turbolasers"] = []
 ships["test_ship"]["upgrades"]["size"] = "small"
 

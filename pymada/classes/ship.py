@@ -1,5 +1,9 @@
-import copy
+"""
+"""
+
+import copy, itertools
 import numpy as np
+
 import pymada
 import pymada.errors
 import pymada.data.ships
@@ -17,14 +21,32 @@ class Ship(PlayerPiece):
     """Class describing a Ship
     """
 
-    def __init__(self, model, name, faction, speed=0, upgrades=None):
+    def __init__(
+        self,
+        model,
+        name,
+        faction,
+        player_name=None,
+        speed=0,
+        upgrades=None,
+        x=0.0,
+        y=0.0,
+        theta=0.0,
+    ):
         """Constructor for Ship
+        args:
+            theta - [float, deg]
         """
 
-        super().__init__(model=model, name=name, faction=faction, upgrades=upgrades)
+        super().__init__(
+            model=model,
+            name=name,
+            faction=faction,
+            upgrades=upgrades,
+            player_name=player_name,
+        )
 
         self._data = pymada.data.ships.ships[model]  # attach basic data
-
         self.hull = self._data["hull"]
         self.damage_cards = []
 
@@ -41,7 +63,7 @@ class Ship(PlayerPiece):
             ],
         )
 
-        self.position = Position(x=0.0, y=0.0, theta=0.0)
+        self.position = Position(x=x, y=y, theta=theta)
 
         self.hull_zones = {}  # add hull-zones
         for zone in self._data["hull_zones"]:
@@ -75,10 +97,26 @@ class Ship(PlayerPiece):
 
     @property
     def is_destroyed(self):
+        """
+        """
 
         # XXX add logger here or ShipDestroyedEvent(exception) ?
 
         return True if self.damage >= self.hull else False
+
+    @property
+    def move_options(self):
+        """
+        """
+
+        options = []
+        move_options = []
+        for sub_speed in range(self.speed):
+            clicks = self._data["move"][self.speed][sub_speed]
+            clicks = np.linspace(-clicks, clicks, 2 * clicks + 1, dtype=int)
+            move_options.append(clicks)
+
+        return list(itertools.product(*move_options))
 
     def create_attack_pool(self, attacking_hull_zone, *args, **kwargs):
         """Return deep copy of attacking Dice armament
@@ -91,18 +129,21 @@ class Ship(PlayerPiece):
 
         return attack_pool
 
-    def suffer(self, damage, defending_hull_zone, *args, **kwargs):
+    def suffer(self, attack, defending_hull_zone, *args, **kwargs):
         """
 
         args:
-            damage - 
+            attack - [Dice] 
             defending_hull_zone - 
         """
 
+        damage = attack.damage_normal + attack.damage_critical
+
         damage_remaining = damage - self.hull_zones[defending_hull_zone].shields
         self.hull_zones[defending_hull_zone].shields -= damage
-        if damage_remaining > 0:
-            for card in range(damage_remaining):
+        if self.hull_zones[defending_hull_zone].shields < 0:
+            self.hull_zones[defending_hull_zone].shields = 0
+            for card in range(int(damage_remaining)):
                 self.damage_cards.append("card")
 
     def move(self, clicks):
@@ -116,11 +157,12 @@ class Ship(PlayerPiece):
         """
 
         # first test move is valid
-        if self.speed not in self._data["move"]:
-            raise pymada.errors.ShipSpeedError(
-                self,
-                f"requested speed={self.speed} not available - options = {[speed for speed in self._data['move']]}",
-            )
+        # XXX if changing speed
+        # if self.speed not in self._data["move"]:
+        #    raise pymada.errors.ShipSpeedError(
+        #        self,
+        #        f"requested speed={self.speed} not available - options = {[speed for speed in self._data['move']]}",
+        #    )
 
         if not all(
             [
@@ -218,7 +260,7 @@ class Ship(PlayerPiece):
                 )
                 return False
 
-        #XXX for fighter this function will just return true, since LoS disregards ship's base
+        #XXX for squadron this function will just return true, since LoS disregards ship's base
 
         #XXX at this point we will need to check line from enemy does not cross our hullzone lines 
         if LOGIC

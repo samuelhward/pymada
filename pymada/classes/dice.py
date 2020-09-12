@@ -13,46 +13,46 @@ class Dice:
     """
 
     FACES = {}
-    FACES["RED"] = [
-        "HIT",
-        "HIT",
-        "CRIT",
-        "CRIT",
-        "ACCURACY",
-        "HIT+HIT",
-        "BLANK",
-        "BLANK",
+    FACES["red"] = [
+        "hit",
+        "hit",
+        "crit",
+        "crit",
+        "accuracy",
+        "hit+hit",
+        "blank",
+        "blank",
     ]
-    FACES["BLUE"] = [
-        "HIT",
-        "HIT",
-        "HIT",
-        "HIT",
-        "CRIT",
-        "CRIT",
-        "ACCURACY",
-        "ACCURACY",
+    FACES["blue"] = [
+        "hit",
+        "hit",
+        "hit",
+        "hit",
+        "crit",
+        "crit",
+        "accuracy",
+        "accuracy",
     ]
-    FACES["BLACK"] = [
-        "HIT",
-        "HIT",
-        "HIT",
-        "HIT",
-        "HIT+CRIT",
-        "HIT+CRIT",
-        "BLANK",
-        "BLANK",
+    FACES["black"] = [
+        "hit",
+        "hit",
+        "hit",
+        "hit",
+        "hit+crit",
+        "hit+crit",
+        "blank",
+        "blank",
     ]
 
     DAMAGE_AVERAGE = {}
-    DAMAGE_AVERAGE["SHIPS"] = {}
-    DAMAGE_AVERAGE["SHIPS"]["red"] = 0.75
-    DAMAGE_AVERAGE["SHIPS"]["blue"] = 0.75
-    DAMAGE_AVERAGE["SHIPS"]["black"] = 1.0
-    DAMAGE_AVERAGE["SQUADRONS"] = {}
-    DAMAGE_AVERAGE["SQUADRONS"]["red"] = 0.50
-    DAMAGE_AVERAGE["SQUADRONS"]["blue"] = 0.50
-    DAMAGE_AVERAGE["SQUADRONS"]["black"] = 0.75
+    DAMAGE_AVERAGE["ships"] = {}
+    DAMAGE_AVERAGE["ships"]["red"] = 0.75
+    DAMAGE_AVERAGE["ships"]["blue"] = 0.75
+    DAMAGE_AVERAGE["ships"]["black"] = 1.0
+    DAMAGE_AVERAGE["squadrons"] = {}
+    DAMAGE_AVERAGE["squadrons"]["red"] = 0.50
+    DAMAGE_AVERAGE["squadrons"]["blue"] = 0.50
+    DAMAGE_AVERAGE["squadrons"]["black"] = 0.75
 
     RANGE_COLOURS = {}
     RANGE_COLOURS["red"] = {"red"}
@@ -166,9 +166,9 @@ class Dice:
         for colour in self.colours:
 
             damage += sum(
-                result.count("HIT")
+                result.count("hit")
                 for result in self.results[colour]
-                if ("HIT" in result)
+                if ("hit" in result)
             )
 
         return damage
@@ -180,9 +180,9 @@ class Dice:
         for colour in self.colours:
 
             damage += sum(
-                result.count("CRIT")
+                result.count("crit")
                 for result in self.results[colour]
-                if ("CRIT" in result)
+                if ("crit" in result)
             )
 
         return damage
@@ -219,7 +219,7 @@ class Dice:
             )
             return
 
-        attack_colours = RANGE_COLOURS[target_distance]
+        attack_colours = self.RANGE_COLOURS[target_distance]
         # can only attack with dice that we have available for given target range
         available_attack_colours = attack_colours & self.colours
 
@@ -229,12 +229,12 @@ class Dice:
             )
             return
 
-        results = []
-
         for colour in available_attack_colours:
+            results = []
             for die_number in range(self[colour]):
-                rand = random.randint(1, len(FACES[colour]))
-                results.append(FACES[colour][rand - 1])
+                rand = random.randint(1, len(self.FACES[colour]))
+                results.append(self.FACES[colour][rand - 1])
 
-        self.results = results
+            self.results[colour] = results
+
         self.has_rolled = True

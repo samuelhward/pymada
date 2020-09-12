@@ -1,3 +1,6 @@
+"""
+"""
+
 import pytest
 import os, sys  # explicitly modify path to avoid having to constantly run setup.py to test code
 import numpy as np
@@ -16,8 +19,63 @@ from pymada.classes.piece import Piece
 from pymada.classes.player_piece import PlayerPiece
 from pymada.classes.position import Position
 from pymada.classes.dice import Dice
+from pymada.classes.player import Player
+from pymada.classes.game import Game
+from pymada.classes.fleet import Fleet
+from pymada.classes.decision import Decision
 
 # TODO separate tests into multiple levels? since all rely on test ship initialisation for example
+
+# Decision tests
+
+
+def test_decision():
+    """
+    """
+
+    test_decision = Decision("test_choice")
+    assert test_decision.parse_choice_test("porkins?") == "porkins!"
+
+
+# Game tests
+
+
+def test_game():
+    """
+    """
+
+    test_player = Player(name="test", species="test")
+    test_game = Game(players=[test_player], fleets=None)
+
+    assert test_game.is_over is False
+    test_game.turn=10
+    assert test_game.is_over is True
+
+# Player tests
+
+
+def test_player():
+    """
+    """
+
+    test_player = Player(name="test", species="test")
+    assert test_player.choose("porkins?") == "porkins!"
+
+
+# Fleet tests
+
+
+def test_fleet():
+    """
+    """
+
+    test_fleet = Fleet()
+    test_fleet.add_ship(model="test_ship", name="test_name", faction="test_faction")
+
+    assert test_fleet.models[0] == "test_ship"
+    assert test_fleet.names[0] == "test_name"
+    assert test_fleet.factions[0] == "test_faction"
+
 
 # utils tests
 
@@ -37,6 +95,9 @@ def test_rotate_2D():
     assert round(y, 0) == 1
 
 
+# Board tests
+
+
 def test_board():
     """
     """
@@ -48,7 +109,7 @@ def test_board():
 # ship data tests
 
 
-def test_ships():
+def test_ship_data():
     """
     """
 
@@ -58,17 +119,21 @@ def test_ships():
 # Ship tests
 
 
-def test_Ship():
+def test_ship():
     """Test ship generation
     """
 
     test_ship = pymada.classes.ship.Ship(
-        model="test_ship", name="a ship for testing", faction="neutral", upgrades=None
+        model="test_ship",
+        name="a ship for testing",
+        faction="neutral",
+        upgrades=None,
+        player_name="porkins",
     )
     assert test_ship.hull_zones["front"].armament == 1 * "red"
 
 
-def test_Ship_move():
+def test_ship_move():
     """Test basic ship movement including attached hull_zones
     """
 
@@ -80,14 +145,14 @@ def test_Ship_move():
         speed=2,
     )
 
-    test_ship.move(clicks=[1, 0])
+    test_ship.move(clicks=[0, 1])
 
     assert round(test_ship.position.theta, 0) == -20
     assert round(test_ship.hull_zones["front"].position.theta, 0) == -20
     assert round(test_ship.base.centre.theta, 0) == -20.0
 
 
-def test_Ship_move_exceptions():
+def test_ship_move_exceptions():
     """Test basic ship movement exceptions
     """
 
@@ -195,6 +260,11 @@ def test_dice_equals():
     """
 
     assert Dice("blue") == Dice("blue")
+
+
+def test_dice_roll():
+
+    rolled_dice = Dice(4 * "red").roll(target_distance="red")
 
 
 # PlayerPiece tests

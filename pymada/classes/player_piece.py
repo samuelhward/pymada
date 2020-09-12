@@ -15,13 +15,27 @@ class PlayerPiece(Piece):
     """Class describing playable piece
     """
 
-    def __init__(self, model, name, faction, upgrades=None):
+    def __init__(self, model, name, faction, player_name=None, upgrades=None):
         """Constructor for playable piece
         """
         super().__init__(name=name)
 
         self.faction = faction
         self._upgrades = upgrades
+        self.has_activated = False
+        self.player_name = player_name
+
+    def activate(self):
+        """
+        """
+
+        self.has_activated = True
+
+    def deactivate(self):
+        """
+        """
+
+        self.has_activated = False
 
     def fire(self, defender, *args, **kwargs):
         """
@@ -44,15 +58,11 @@ class PlayerPiece(Piece):
 
                 # TODO add various attack stages here e.g. spend defense tokens
 
-                defender.suffer(
-                    damage=attack.damage_normal + attack.damage_critical,
-                    *args,
-                    **kwargs
-                )
+                defender.suffer(attack, *args, **kwargs)
 
     # TODO make ABC
     def create_attack_pool(*args, **kwargs):
         """Return deep copy of attacking Dice armament
         """
 
-        return Dice()
+        raise NotImplmentedError

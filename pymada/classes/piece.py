@@ -46,32 +46,33 @@ class Piece:
 
         self.position.move(*args, **kwargs)
 
-    def suffer(*args, **kwargs):
+    def suffer(self, attack, *args, **kwargs):
         """
         """
 
-        pass
+        raise NotImplmentedError
 
     # Define multiple dispatch methods for targeting here (because for example LoS measured to objectives)
     # XXX MAKE ABCs?
     def LoS_to(self, defender, *args, **kwargs):
         """
         """
-        pass
+        raise NotImplmentedError
 
     def LoS_from(self, attacker, *args, **kwargs):
         """
         """
-        return True
+
+        raise NotImplmentedError
 
     def range_to(self, defender, *args, **kwargs):
         """
         """
 
-        pass
+        raise NotImplmentedError
 
     def range_from(self, attacker, *args, **kwargs):
         """
         """
 
-        return True
+        raise NotImplmentedError

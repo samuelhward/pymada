@@ -94,10 +94,4 @@ class HullZone:
             for colour in pymada.data.tools.rulers["range"]
             if pymada.data.tools.rulers["range"][colour] <= distance_between_LoS_dots
         }
-        return colours  # XXX multiple dispatch return distance 1 for fighters?
-
-    def fire(defender, defending_hull_zone):
-        """
-        """
-
-        # XXX create dice pool object here
+        return colours  # XXX multiple dispatch return distance 1 for squadrons?
