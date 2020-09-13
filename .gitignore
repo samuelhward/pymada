@@ -37,3 +37,6 @@ venv/
 
 #PDFs
 *.pdf
+
+#log files
+porkins_diaries.log

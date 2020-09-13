@@ -4,9 +4,11 @@
 import pytest
 import os, sys  # explicitly modify path to avoid having to constantly run setup.py to test code
 import numpy as np
+import logging
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import settings
 import pymada
 import pymada.errors
 import pymada.data.ships
@@ -25,6 +27,20 @@ from pymada.classes.fleet import Fleet
 from pymada.classes.decision import Decision
 
 # TODO separate tests into multiple levels? since all rely on test ship initialisation for example
+
+# Logging tests
+
+
+def test_logging():
+    """
+    """
+
+    assert settings.debug_mode is True
+    log_message = "porkins!"
+    pymada.logger.info(log_message)
+    with open(settings.logging_file_name) as file:
+        assert file.readline() == f"pymada_log INFO: {log_message}\n"
+
 
 # Decision tests
 
@@ -48,8 +64,9 @@ def test_game():
     test_game = Game(players=[test_player], fleets=None)
 
     assert test_game.is_over is False
-    test_game.turn=10
+    test_game.turn = 10
     assert test_game.is_over is True
+
 
 # Player tests
 
