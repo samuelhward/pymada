@@ -43,6 +43,7 @@ class Game:
         else:
             return True
 
+    @pymada.log(message='deploying ships')
     def deploy(self):
         """
         """
@@ -85,6 +86,7 @@ class Game:
                     theta=theta,
                 )
 
+    @pymada.log(message='beginning game')
     def play(self):
         """
         """
@@ -104,6 +106,7 @@ class Game:
 
         self.turn += 1
 
+    @pymada.log(message='beginning ship phase')
     def play_ship_phase(self):
         """
         """
@@ -217,12 +220,14 @@ class Game:
             ):
                 finished_ship_phase = True
 
+    @pymada.log(message='beginning squadron phase')
     def play_squadron_phase(self):
         """
         """
 
         pass
 
+    @pymada.log(message='beginning status phase')
     def play_status_phase(self):
         """
         """
