@@ -26,3 +26,14 @@ formatter = logging.Formatter(
 logging_handler.setFormatter(formatter)
 
 logger.addHandler(logging_handler)
+
+
+def log(message, *args, **kwargs):  # create logging decorator
+    def decorator(function):
+        def inner(*args, **kwargs):
+            logger.info("EVENT: " + message)
+            return function(*args, **kwargs)
+
+        return inner
+
+    return decorator

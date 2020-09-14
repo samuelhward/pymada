@@ -25,8 +25,22 @@ from pymada.classes.player import Player
 from pymada.classes.game import Game
 from pymada.classes.fleet import Fleet
 from pymada.classes.decision import Decision
+from pymada.classes.event import Event
 
 # TODO separate tests into multiple levels? since all rely on test ship initialisation for example
+
+# Event tests
+
+
+def test_event():
+    """
+    """
+
+    test_event = Event(name="test_event")
+    test_event.trigger()
+    with open(settings.logging_file_name) as file:
+        assert any(test_event.MESSAGE in line for line in file.readlines())
+
 
 # Logging tests
 
@@ -39,7 +53,7 @@ def test_logging():
     log_message = "porkins!"
     pymada.logger.info(log_message)
     with open(settings.logging_file_name) as file:
-        assert file.readline() == f"pymada_log INFO: {log_message}\n"
+        assert f"pymada_log INFO: {log_message}\n" in file.readlines()
 
 
 # Decision tests
