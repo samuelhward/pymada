@@ -43,7 +43,7 @@ class Game:
         else:
             return True
 
-    @pymada.log(message='deploying ships')
+    @pymada.log(message="deploying ships")
     def deploy(self):
         """
         """
@@ -86,7 +86,7 @@ class Game:
                     theta=theta,
                 )
 
-    @pymada.log(message='beginning game')
+    @pymada.log(message="beginning game")
     def play(self):
         """
         """
@@ -106,7 +106,7 @@ class Game:
 
         self.turn += 1
 
-    @pymada.log(message='beginning ship phase')
+    @pymada.log(message="beginning ship phase")
     def play_ship_phase(self):
         """
         """
@@ -149,7 +149,7 @@ class Game:
                     }
                     enemy_targets = {ship for ship in self.board.ships} - allied_targets
 
-                    #XXX add more information here to tell player what they are selecting
+                    # XXX add more information here to tell player what they are selecting
                     ship_to_activate_name = self.players[current_player.name].choose(
                         Decision("select_piece", options=player_ships)
                     )
@@ -161,8 +161,8 @@ class Game:
                     # shoot
                     # XXX ADD CATCHING HERE IF CHOOSES A SHIP THEY CANNOT FIRE ON FOR EXAMPLE i.e. IF FIRE RAISES EXCEPTION
                     # XXX what if firing on squadron?
-                    
-                    #XXX add more information here to tell player what they are selecting
+
+                    # XXX add more information here to tell player what they are selecting
                     target_piece = self.players[current_player.name].choose(
                         Decision("select_piece", options=enemy_targets)
                     )
@@ -220,14 +220,14 @@ class Game:
             ):
                 finished_ship_phase = True
 
-    @pymada.log(message='beginning squadron phase')
+    @pymada.log(message="beginning squadron phase")
     def play_squadron_phase(self):
         """
         """
 
         pass
 
-    @pymada.log(message='beginning status phase')
+    @pymada.log(message="beginning status phase")
     def play_status_phase(self):
         """
         """
