@@ -40,3 +40,6 @@ venv/
 
 #log files
 porkins_diaries.log
+
+#plot file
+pymada_plot.html
