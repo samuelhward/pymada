@@ -57,6 +57,12 @@ class BaseDecision:
 
         return str(choice[:-1]) + "!"
 
+    def parse_choice_random(self, choice):
+        """
+        """
+
+        return choice
+
 
 class DecideSelectPlayer(BaseDecision):
     """

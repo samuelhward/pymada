@@ -1,7 +1,7 @@
 """
 """
 
-import os, sys
+import os, sys, random
 
 import pymada
 import pymada.errors
@@ -35,7 +35,9 @@ class Player:
 
         choose_dispatch = {}
         choose_dispatch["human"] = self.choose_human
+        choose_dispatch["random"] = self.choose_random
         choose_dispatch["test"] = self.choose_test
+        choose_dispatch["ai"] = self.choose_ai
 
         return choose_dispatch[self.species](decision)
 
@@ -54,13 +56,25 @@ class Player:
         return choice_parsed
 
     @staticmethod
+    def choose_random(decision):
+        """Choose method for random-type player
+
+        args:
+            decision - [Decision]
+        """
+
+        choice = random.sample(decision.options, 1)[0]
+        choice_parsed = decision.parse_choice_random(choice)
+        return choice_parsed
+
+    @staticmethod
     def choose_test(decision):
         """
         args:
             decision - 
         """
 
-        return str(decision[:-1])+'!'
+        return str(decision[:-1]) + "!"
 
     @staticmethod
     def choose_ai(decision):

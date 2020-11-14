@@ -85,9 +85,9 @@ ships["test_ship"]["LoS_dots"]["rear"] = (
     bases[ships["test_ship"]["size"]]["height"] / 4.0
 )
 ships["test_ship"]["armament"]["front"] = 1 * "red"
-ships["test_ship"]["armament"]["left"] = 1 * "blue"
-ships["test_ship"]["armament"]["right"] = 1 * "blue"
-ships["test_ship"]["armament"]["rear"] = 1 * "blue"
+ships["test_ship"]["armament"]["left"] = 1 * "red"
+ships["test_ship"]["armament"]["right"] = 1 * "red"
+ships["test_ship"]["armament"]["rear"] = 1 * "red"
 ships["test_ship"]["arc_left"]["front"] = (
     -np.arctan2(
         bases[ships["test_ship"]["size"]]["width"],

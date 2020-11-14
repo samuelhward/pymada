@@ -176,14 +176,16 @@ class Game:
                     attacking_hull_zone = self.players[current_player.name].choose(
                         Decision(
                             "select_hull_zone",
-                            options=self.board.ships[ship_to_activate_name].hull_zones,
+                            options=self.board.ships[
+                                ship_to_activate_name
+                            ].hull_zones.keys(),
                         )
                     )
 
                     defending_hull_zone = self.players[current_player.name].choose(
                         Decision(
                             "select_hull_zone",
-                            options=self.board.ships[target_piece].hull_zones,
+                            options=self.board.ships[target_piece].hull_zones.keys(),
                         )
                     )
 
@@ -195,7 +197,7 @@ class Game:
 
                     if self.board.ships[target_piece].is_destroyed:
 
-                        self.plotter.erase(self.board.ships[target_piece].name)
+                        self.plotter.erase(self.board.ships[target_piece])
 
                         if all(
                             self.board.ships[ship].is_destroyed
