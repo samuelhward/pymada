@@ -219,6 +219,7 @@ class Game:
                     self.board.ships[ship_to_activate_name].move(clicks_to_move)
 
                     self.plotter.draw(self.board.ships[ship_to_activate_name])
+                    self.plotter.show()
 
                 elif current_player.name not in finished_players:
 
