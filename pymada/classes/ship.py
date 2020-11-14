@@ -54,16 +54,17 @@ class Ship(PlayerPiece):
         # TODO check here if speed is valid
         self.speed = speed  # XXX for a squadron this is move range
 
+        self.position = Position(x=0.0, y=0.0, theta=0.0)
+
+        # add base - make sure to swap x and y since ship starts facing East at theta = 0
         self.base = Base(
             outline_points_x=pymada.data.ships.bases[self._data["size"]]["outline"][
-                "x"
-            ],
-            outline_points_y=pymada.data.ships.bases[self._data["size"]]["outline"][
                 "y"
             ],
+            outline_points_y=pymada.data.ships.bases[self._data["size"]]["outline"][
+                "x"
+            ],
         )
-
-        self.position = Position(x=x, y=y, theta=theta)
 
         self.hull_zones = {}  # add hull-zones
         for zone in self._data["hull_zones"]:
@@ -74,12 +75,16 @@ class Ship(PlayerPiece):
                 arc_left=self._data["arc_left"][zone],
                 arc_right=self._data["arc_right"][zone],
             )
+
+            """#delete this?
             # move the hull zone to the ship
             self.hull_zones[zone].move(
                 x=self.position.x,
                 y=self.position.y,
                 theta_rotate_last=self.position.theta,
             )
+            """  # delete this?
+
             self.position.add_observer(
                 # attach this hull_zone.move() method as observer of Ship position
                 self.hull_zones[zone].move
@@ -87,6 +92,14 @@ class Ship(PlayerPiece):
         self.position.add_observer(
             # add base as observer
             self.base.move
+        )
+
+        self.position.move(
+            x=x,
+            y=y,
+            theta_rotate_last=theta,
+            centre_x_rotate_last=x,
+            centre_y_rotate_last=y,
         )
 
     @property

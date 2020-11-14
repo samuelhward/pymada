@@ -88,9 +88,13 @@ ships["test_ship"]["armament"]["front"] = 1 * "red"
 ships["test_ship"]["armament"]["left"] = 1 * "blue"
 ships["test_ship"]["armament"]["right"] = 1 * "blue"
 ships["test_ship"]["armament"]["rear"] = 1 * "blue"
-ships["test_ship"]["arc_left"]["front"] = -np.arctan2(
-    bases[ships["test_ship"]["size"]]["width"],
-    bases[ships["test_ship"]["size"]]["height"],
+ships["test_ship"]["arc_left"]["front"] = (
+    -np.arctan2(
+        bases[ships["test_ship"]["size"]]["width"],
+        bases[ships["test_ship"]["size"]]["height"],
+    )
+    * 180.0
+    / np.pi
 )
 ships["test_ship"]["arc_right"]["front"] = -1.0 * copy.deepcopy(
     ships["test_ship"]["arc_left"]["front"]
@@ -100,7 +104,7 @@ ships["test_ship"]["arc_left"]["right"] = copy.deepcopy(
     ships["test_ship"]["arc_right"]["front"]
 )
 ships["test_ship"]["arc_right"]["right"] = (
-    180.0 - ships["test_ship"]["arc_left"]["front"]
+    180.0 + ships["test_ship"]["arc_left"]["front"]
 )
 
 ships["test_ship"]["arc_left"]["rear"] = copy.deepcopy(

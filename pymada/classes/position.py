@@ -37,6 +37,28 @@ class Position:
 
         return Position(x=dx, y=dy, theta=theta)
 
+    def __eq__(self, other_position):
+        """Overload = operator
+        
+        args:
+            other_dice - other die object [Dice] or [str]
+        notes:
+            does not compare roll results
+        """
+
+        # if string, first convert to Dice object
+        if self.x is not None and other_position.x is not None:
+            if self.x != other_position.x:
+                return False
+        if self.y is not None and other_position.y is not None:
+            if self.y != other_position.y:
+                return False
+        if self.theta is not None and other_position.theta is not None:
+            if self.theta != other_position.theta:
+                return False
+
+        return True
+
     def add_observer(self, observer):
         """
         """

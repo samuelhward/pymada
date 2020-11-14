@@ -1,5 +1,5 @@
 import sys, logging
-import settings
+from . import settings
 
 log_level = "DEBUG" if settings.debug_mode else "INFO"
 log_levels = {
@@ -31,7 +31,7 @@ logger.addHandler(logging_handler)
 def log(message, *args, **kwargs):  # create logging decorator
     def decorator(function):
         def inner(*args, **kwargs):
-            logger.info("EVENT: " + message)
+            logger.info(message)
             return function(*args, **kwargs)
 
         return inner

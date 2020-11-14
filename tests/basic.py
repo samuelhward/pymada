@@ -8,8 +8,8 @@ import logging
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import settings
 import pymada
+import pymada.settings
 import pymada.errors
 import pymada.data.ships
 import pymada.classes.ship
@@ -38,7 +38,7 @@ def test_event():
 
     test_event = Event(name="test_event")
     test_event.trigger()
-    with open(settings.logging_file_name) as file:
+    with open(pymada.settings.logging_file_name) as file:
         assert any(test_event.MESSAGE in line for line in file.readlines())
 
 
@@ -49,10 +49,10 @@ def test_logging():
     """
     """
 
-    assert settings.debug_mode is True
+    assert pymada.settings.debug_mode is True
     log_message = "porkins!"
     pymada.logger.info(log_message)
-    with open(settings.logging_file_name) as file:
+    with open(pymada.settings.logging_file_name) as file:
         assert f"pymada_log INFO: {log_message}\n" in file.readlines()
 
 
@@ -160,8 +160,15 @@ def test_ship():
         faction="neutral",
         upgrades=None,
         player_name="porkins",
+        speed=2,
+        x=5.0,
+        y=10.0,
+        theta=20.0,
     )
     assert test_ship.hull_zones["front"].armament == 1 * "red"
+    assert test_ship.position == test_ship.base.centre
+    test_ship.move(clicks=[0, 1])
+    assert test_ship.position == test_ship.base.centre
 
 
 def test_ship_move():
@@ -259,6 +266,17 @@ def test_position_move():
 
     test_position.move(theta_rotate_last=20.0)
     assert round(test_position.theta, 1) == 20.0
+
+
+def test_position_eq():
+    """Test position equals
+    """
+
+    test_position = Position(x=5.0, y=5.0, theta=20.0)
+    different_test_position = Position(x=6.0, y=5.0, theta=20.0)
+
+    assert test_position == test_position
+    assert test_position != different_test_position
 
 
 # Dice tests

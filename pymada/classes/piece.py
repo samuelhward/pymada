@@ -1,3 +1,4 @@
+import random
 import pymada
 import pymada.errors
 from pymada.classes.base import Base
@@ -8,7 +9,7 @@ class Piece:
     """Base class describing board pieces
     """
 
-    def __init__(self, name):
+    def __init__(self, name, *args, **kwargs):
         """Constructor for Piece
 
         args:
@@ -22,6 +23,8 @@ class Piece:
             # add base as observer
             self.base.move
         )
+        self.colour=kwargs.get("colour", '#'+''.join([format(random.randint(0,255),'02X') for _ in range(3)]))
+
         self._damage = 0
         self._is_destroyed = False
 

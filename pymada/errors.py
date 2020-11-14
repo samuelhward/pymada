@@ -1,14 +1,27 @@
-class DiceException(Exception):
+import pymada
+
+
+class PymadaException(Exception):
+    """Basic exception to add logging etc.
+    """
+
+    def __init__(self, message):
+        self.message = message
+        pymada.logger.error(message)
+        super().__init__(self.message)
+
+
+class DiceException(PymadaException):
     """Except raised for errors with Dice
     """
 
 
-class PositionException(Exception):
+class PositionException(PymadaException):
     """Except raised for errors in Piece 
     """
 
 
-class PieceException(Exception):
+class PieceException(PymadaException):
     """Except raised for errors in Piece 
     """
 
@@ -53,7 +66,7 @@ class ShipHullZoneError(ShipException):
     """
 
 
-class HullZoneError(Exception):
+class HullZoneError(PymadaException):
     """Except raised by HullZone
     """
 
@@ -72,4 +85,9 @@ class NoLoS(HullZoneError):
 
 class NotInRange(HullZoneError):
     """Except raised when HullZone not in range
+    """
+
+
+class PlotError(PymadaException):
+    """Except raised when plotting
     """

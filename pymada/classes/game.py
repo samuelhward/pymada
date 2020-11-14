@@ -9,6 +9,7 @@ import pymada
 import pymada.errors
 from pymada.classes.board import Board
 from pymada.classes.decision import Decision
+from pymada.classes.plotter import Plotter
 
 
 class Game:
@@ -30,6 +31,7 @@ class Game:
         self.player_turn = itertools.cycle(players)
         self.board = Board()
         self.fleets = fleets
+        self.plotter = Plotter()
 
     @property
     def is_over(self):
@@ -51,7 +53,7 @@ class Game:
         # XXX how to do squadrons?
 
         # XXX just deploy all ships at once for now
-        ship_speed = 1  # XXX add player choices here in future
+        ship_speed = 2  # XXX add player choices here in future
 
         # TODO exception handling for ships lying outside deployment zone
         for (player_name, player), fleet in zip(self.players.items(), self.fleets):
@@ -64,15 +66,13 @@ class Game:
                     np.random.random()
                     * self.board.zones["deployment"].width
                     * (np.random.random() - 0.5)
-                    / 0.5
                 )
                 y = (
                     np.random.random()
                     * self.board.zones["deployment"].height
                     * (np.random.random() - 0.5)
-                    / 0.5
                 )
-                theta = -np.asarray(np.arctan2(y, x))
+                theta = np.asarray(np.arctan2(y, x)) * 180.0 / np.pi + 180
 
                 self.board.add_ship(
                     player_name=player_name,
@@ -86,12 +86,18 @@ class Game:
                     theta=theta,
                 )
 
+            self.plotter.draw(self.board.ships[name])
+
     @pymada.log(message="beginning game")
     def play(self):
         """
         """
 
+        self.plotter.draw(self.board, clear=False)
+
         self.deploy()
+
+        self.plotter.show()
 
         while not self.is_over:
             self.play_turn()
@@ -187,15 +193,19 @@ class Game:
                         defending_hull_zone=defending_hull_zone,
                     )
 
-                    if all(
-                        self.board.ships[ship].is_destroyed
-                        for ship in enemy_targets
-                        if self.board.ships[ship].player_name
-                        == self.board.ships[target_piece].player_name
-                    ):
-                        self.players[
-                            self.board.ships[target_piece].player_name
-                        ].is_eliminated = True
+                    if self.board.ships[target_piece].is_destroyed:
+
+                        self.plotter.erase(self.board.ships[target_piece].name)
+
+                        if all(
+                            self.board.ships[ship].is_destroyed
+                            for ship in enemy_targets
+                            if self.board.ships[ship].player_name
+                            == self.board.ships[target_piece].player_name
+                        ):
+                            self.players[
+                                self.board.ships[target_piece].player_name
+                            ].is_eliminated = True
 
                     # move
                     clicks_to_move = self.players[current_player.name].choose(
@@ -207,6 +217,8 @@ class Game:
                         )
                     )
                     self.board.ships[ship_to_activate_name].move(clicks_to_move)
+
+                    self.plotter.draw(self.board.ships[ship_to_activate_name])
 
                 elif current_player.name not in finished_players:
 
