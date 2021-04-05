@@ -37,6 +37,29 @@ class PlayerPiece(Piece):
 
         self.has_activated = False
 
+    def can_fire(self, defender, *args, **kwargs):
+        """
+        """
+
+        # first check line of sight
+
+        if self.LoS_to(defender, *args, **kwargs):
+
+            # calculate range to target
+
+            range_to = self.range_to(defender, *args, **kwargs)
+
+            # does attacker possess necessary attack dice for this range
+            if range_to:
+
+                if (
+                    Dice.RANGE_COLOURS[range_to]
+                    & self.create_attack_pool(*args, **kwargs).colours
+                ):
+                    return True
+
+        return False
+
     def fire(self, defender, *args, **kwargs):
         """
         
@@ -44,21 +67,21 @@ class PlayerPiece(Piece):
             defender -  
         """
 
-        # TODO add some exception handling here?
-        if self.LoS_to(defender, *args, **kwargs):
+        if self.can_fire(defender, *args, **kwargs):
+
             attack_range = self.range_to(defender, *args, **kwargs)
-            if attack_range:
-                attack = self.create_attack_pool(*args, **kwargs)
 
-                # XXX more modifications here
+            attack = self.create_attack_pool(*args, **kwargs)
 
-                attack.roll(attack_range)
+            # XXX more modifications here
 
-                # XXX even more modifications here
+            attack.roll(attack_range)
 
-                # TODO add various attack stages here e.g. spend defense tokens
+            # XXX even more modifications here
 
-                defender.suffer(attack, *args, **kwargs)
+            # TODO add various attack stages here e.g. spend defense tokens
+
+            defender.suffer(attack, *args, **kwargs)
 
     # TODO make ABC
     def create_attack_pool(*args, **kwargs):

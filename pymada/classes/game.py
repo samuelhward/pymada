@@ -32,6 +32,7 @@ class Game:
         self.board = Board()
         self.fleets = fleets
         self.plotter = Plotter()
+        self.winner = None
 
     @property
     def is_over(self):
@@ -40,10 +41,28 @@ class Game:
 
         # XXX CHECK FOR VICTORY CONDITIONS HERE
 
-        if self.turn <= self.MAX_TURNS:
-            return False
-        else:
+        if self.turn >= self.MAX_TURNS:
             return True
+        elif self.winner:
+            return True
+        else:
+            return False
+
+    @pymada.log(message="beginning game")
+    def play(self):
+        """
+        """
+
+        self.plotter.draw(self.board, clear=False)
+
+        self.deploy()
+
+        self.plotter.show()
+
+        while not self.is_over:
+            self.play_turn()
+
+        return self.winner
 
     @pymada.log(message="deploying ships")
     def deploy(self):
@@ -88,20 +107,6 @@ class Game:
 
             self.plotter.draw(self.board.ships[name])
 
-    @pymada.log(message="beginning game")
-    def play(self):
-        """
-        """
-
-        self.plotter.draw(self.board, clear=False)
-
-        self.deploy()
-
-        self.plotter.show()
-
-        while not self.is_over:
-            self.play_turn()
-
     def play_turn(self):
         """
         """
@@ -124,16 +129,27 @@ class Game:
 
             current_player = next(self.player_turn)
 
-            # check player is still playing
+            # check player is not eliminated
 
             if current_player.is_eliminated:
 
                 if current_player.name not in finished_players:
                     finished_players.append(current_player.name)
 
+            # check player is not winner
+
+            elif {current_player.name} == {player for player in self.players} - {
+                player.name for player in self.players.values() if player.is_eliminated
+            }:
+                self.winner = current_player
+                finished_ship_phase = True
+
+            # play turn
+
             else:
 
                 # check player has ships to activate
+
                 if not all(
                     [
                         ship.has_activated
@@ -143,19 +159,23 @@ class Game:
                 ):
 
                     # determine player ships, friendlies and enemies
+
                     player_ships = {
                         ship_name
                         for ship_name, ship in self.board.ships.items()
                         if ship.player_name == current_player.name
                     }
+
                     allied_targets = {
                         ship_name
                         for ship_name, ship in self.board.ships.items()
                         if ship.faction == current_player.faction
                     }
+
                     enemy_targets = {ship for ship in self.board.ships} - allied_targets
 
                     # XXX add more information here to tell player what they are selecting
+
                     ship_to_activate_name = self.players[current_player.name].choose(
                         Decision("select_piece", options=player_ships)
                     )
@@ -169,47 +189,93 @@ class Game:
                     # XXX what if firing on squadron?
 
                     # XXX add more information here to tell player what they are selecting
+
+                    target_options = []
+                    attacking_hull_zone_options = []
+                    for attacking_hull_zone in self.board.ships[
+                        ship_to_activate_name
+                    ].hull_zones:
+                        for target in enemy_targets:
+                            for defending_hull_zone in self.board.ships[
+                                target
+                            ].hull_zones:
+                                if self.board.ships[ship_to_activate_name].can_fire(
+                                    self.board.ships[target],
+                                    attacking_hull_zone=attacking_hull_zone,
+                                    defending_hull_zone=defending_hull_zone,
+                                ):
+                                    target_options.append(target)
+                                    attacking_hull_zone_options.append(
+                                        attacking_hull_zone
+                                    )
+                    target_options = set(target_options)
+                    attacking_hull_zone_options = set(attacking_hull_zone_options)
+
                     target_piece = self.players[current_player.name].choose(
-                        Decision("select_piece", options=enemy_targets)
+                        Decision("select_piece", options=set(target_options) | {None})
                     )
 
-                    attacking_hull_zone = self.players[current_player.name].choose(
-                        Decision(
-                            "select_hull_zone",
-                            options=self.board.ships[
-                                ship_to_activate_name
-                            ].hull_zones.keys(),
+                    # if firing
+
+                    if target_piece is not None:
+
+                        attacking_hull_zone = self.players[current_player.name].choose(
+                            Decision(
+                                "select_hull_zone", options=attacking_hull_zone_options
+                            )
                         )
-                    )
 
-                    defending_hull_zone = self.players[current_player.name].choose(
-                        Decision(
-                            "select_hull_zone",
-                            options=self.board.ships[target_piece].hull_zones.keys(),
+                        defending_hull_zone = self.players[current_player.name].choose(
+                            Decision(
+                                "select_hull_zone",
+                                options={
+                                    defending_hull_zone
+                                    for defending_hull_zone in self.board.ships[
+                                        target_piece
+                                    ].hull_zones.keys()
+                                    if self.board.ships[ship_to_activate_name].can_fire(
+                                        self.board.ships[target],
+                                        attacking_hull_zone=attacking_hull_zone,
+                                        defending_hull_zone=defending_hull_zone,
+                                    )
+                                },
+                            )
                         )
-                    )
 
-                    self.board.ships[ship_to_activate_name].fire(
-                        self.board.ships[target_piece],
-                        attacking_hull_zone=attacking_hull_zone,
-                        defending_hull_zone=defending_hull_zone,
-                    )
+                        self.board.ships[ship_to_activate_name].fire(
+                            self.board.ships[target_piece],
+                            attacking_hull_zone=attacking_hull_zone,
+                            defending_hull_zone=defending_hull_zone,
+                        )
 
-                    if self.board.ships[target_piece].is_destroyed:
+                        if self.board.ships[target_piece].is_destroyed:
 
-                        self.plotter.erase(self.board.ships[target_piece])
+                            self.plotter.erase(self.board.ships[target_piece])
 
-                        if all(
-                            self.board.ships[ship].is_destroyed
-                            for ship in enemy_targets
-                            if self.board.ships[ship].player_name
-                            == self.board.ships[target_piece].player_name
-                        ):
-                            self.players[
-                                self.board.ships[target_piece].player_name
-                            ].is_eliminated = True
+                            if all(
+                                self.board.ships[ship].is_destroyed
+                                for ship in enemy_targets
+                                if self.board.ships[ship].player_name
+                                == self.board.ships[target_piece].player_name
+                            ):
+                                self.players[
+                                    self.board.ships[target_piece].player_name
+                                ].is_eliminated = True
+
+                                # check for win
+
+                                if {current_player.name} == {
+                                    player for player in self.players
+                                } - {
+                                    player.name
+                                    for player in self.players.values()
+                                    if player.is_eliminated
+                                }:
+                                    self.winner = current_player
+                                    finished_ship_phase = True
 
                     # move
+
                     clicks_to_move = self.players[current_player.name].choose(
                         Decision(
                             "clicks_to_move",
@@ -220,12 +286,18 @@ class Game:
                     )
                     self.board.ships[ship_to_activate_name].move(clicks_to_move)
 
+                    # plot ship
+
                     self.plotter.draw(self.board.ships[ship_to_activate_name])
                     self.plotter.show()
+
+                # player out of ships to activate so add to finished_players
 
                 elif current_player.name not in finished_players:
 
                     finished_players.append(current_player.name)
+
+            # if all players finished then end ship phase
 
             if all(
                 [

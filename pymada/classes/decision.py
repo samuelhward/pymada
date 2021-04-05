@@ -74,6 +74,9 @@ class DecideSelectPlayer(BaseDecision):
         """
         """
 
+        if choice.lower() == "none":
+            choice = ast.literal_eval(choice)
+
         # no parsing necessary since user inputs player name as string
         return choice
 
@@ -87,6 +90,9 @@ class DecidePiece(BaseDecision):
     def parse_choice_human(self, choice):
         """
         """
+
+        if choice.lower() == "none":
+            choice = ast.literal_eval(choice)
 
         # no parsing necessary since user inputs ship name as string
         return choice

@@ -76,15 +76,6 @@ class Ship(PlayerPiece):
                 arc_right=self._data["arc_right"][zone],
             )
 
-            """#delete this?
-            # move the hull zone to the ship
-            self.hull_zones[zone].move(
-                x=self.position.x,
-                y=self.position.y,
-                theta_rotate_last=self.position.theta,
-            )
-            """  # delete this?
-
             self.position.add_observer(
                 # attach this hull_zone.move() method as observer of Ship position
                 self.hull_zones[zone].move
@@ -283,27 +274,28 @@ class Ship(PlayerPiece):
 
     def range_to(self, defender, attacking_hull_zone, *args, **kwargs):
         """
+        XXX this currently just returns distance between base centres - in future:
+            range_from will need to do most of the work by taking attacking_hull_zone and attacker's base and comparing with defender's
+
+        XXX so something like:
+            return defender.range_from(self.base,attacking_hull_zone,*args,**kwargs)
+        """
+        
+        distance=defender.base.centre-self.base.centre
+        r=np.sqrt(distance.x**2+distance.y**2)
+        for colour in ["black","blue","red"]:
+            if r<=pymada.data.tools.rulers["range"][colour]:
+                return colour
+        return False 
+
+    def range_from(self, attacker, attacking_hull_zone, defending_hull_zone, *args, **kwargs):
         """
 
-        # XXX this will need to return the point on the base closest to defender, then call defender.range_from and find distance between
+        XXX calculate range in this function and pass upwards, something like:
 
-        """
-        if LOGIC and enemy.range_from(self, *args, **kwargs)
-
-            raise pymada.errors.NotInRange(
-                self.hull_zones[attacking_hull_zone],
-                f"'{attacking_hull_zone}' hull zone of {self.name} has no line of sight to '{defending_hull_zone}' hull zone of {defender.name}",
-            )
-
-        """
-        return "red"  # or None if not in range
-
-    def range_from(self, attacker, defending_hull_zone, *args, **kwargs):
-        """
+            attacker_base=kwargs.get("base",None)
+            then find line joining closest point on our base and attacker base
+            then return the range IN THIS FUNCTION - which is just passed upwards in range_to
         """
 
-        # XXX at this point we will need to yield the point on our base within our hull zone closest to enemy ship
-        """
-        if LOGIC
-        """
         return True
