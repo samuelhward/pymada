@@ -8,7 +8,6 @@ packaging==20.9
 Pillow==8.2.0
 pluggy==0.13.1
 py==1.10.0
--e git+git@github.com:armoured-moose/pymada.git@d7cadb1e582081d730808560aaa9c14f93b24d59#egg=pymada
 pyparsing==2.4.7
 pytest==6.2.3
 python-dateutil==2.8.1
