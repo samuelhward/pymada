@@ -1,45 +1,48 @@
-#pytests
+# pytests
 .pytest_cache
 test.py
 
-#python module files
+# python module files
 *.pyc
 
-#MAC ds_store
+# MAC ds_store
 .DS_Store 
 
-#emacs stuff
+# emacs stuff
 *~
 
-#__pycache__ file
+# __pycache__ file
 __pycache__
 
-#notes and changes files
+# notes and changes files
 notes
 changes
 
-#files beginning and ending with #
+# files beginning and ending with #
 \#*# 
 
-#gifs
+# gifs
 *.gif
 
-#armada data
+# armada data
 data_vals.png
 
-#setuptools stuff
+# setuptools stuff
 dist/
 build/
 pymada.egg-info/
 
-#virtualenv stuff
+# virtualenv stuff
 venv/
 
-#PDFs
+# PDFs
 *.pdf
 
-#log files
+# log files
 porkins_diaries.log
 
-#plot file
+# plot file
 pymada_plot.html
+
+# editor files
+.vscode/
