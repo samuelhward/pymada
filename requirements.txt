@@ -8,7 +8,7 @@ packaging==20.9
 Pillow==8.2.0
 pluggy==0.13.1
 py==1.10.0
--e git+git@github.com:armoured-moose/pymada.git@a0c5c1358c2427460818f640672e145c61a09e9a#egg=pymada
+-e git+git@github.com:armoured-moose/pymada.git@d7cadb1e582081d730808560aaa9c14f93b24d59#egg=pymada
 pyparsing==2.4.7
 pytest==6.2.3
 python-dateutil==2.8.1
@@ -16,4 +16,4 @@ PyYAML==5.4.1
 six==1.15.0
 toml==0.10.2
 tornado==6.1
-typing-extensions==3.7.4.3
+typing-extensions==3.7.4
