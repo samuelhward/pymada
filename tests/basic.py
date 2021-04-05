@@ -33,12 +33,11 @@ from pymada.classes.event import Event
 
 
 def test_event():
-    """
-    """
+    """"""
 
     test_event = Event(name="test_event")
     test_event.trigger()
-    with open(pymada.settings.logging_file_name) as file:
+    with open(pymada.settings.logging_file_path) as file:
         assert any(test_event.MESSAGE in line for line in file.readlines())
 
 
@@ -46,13 +45,12 @@ def test_event():
 
 
 def test_logging():
-    """
-    """
+    """"""
 
     assert pymada.settings.debug_mode is True
     log_message = "porkins!"
     pymada.logger.info(log_message)
-    with open(pymada.settings.logging_file_name) as file:
+    with open(pymada.settings.logging_file_path) as file:
         assert f"pymada_log INFO: {log_message}\n" in file.readlines()
 
 
@@ -60,8 +58,7 @@ def test_logging():
 
 
 def test_decision():
-    """
-    """
+    """"""
 
     test_decision = Decision("test_choice")
     assert test_decision.parse_choice_test("porkins?") == "porkins!"
@@ -71,8 +68,7 @@ def test_decision():
 
 
 def test_game():
-    """
-    """
+    """"""
 
     test_player = Player(name="test", species="test")
     test_game = Game(players=[test_player], fleets=None)
@@ -86,8 +82,7 @@ def test_game():
 
 
 def test_player():
-    """
-    """
+    """"""
 
     test_player = Player(name="test", species="test")
     assert test_player.choose("porkins?") == "porkins!"
@@ -97,8 +92,7 @@ def test_player():
 
 
 def test_fleet():
-    """
-    """
+    """"""
 
     test_fleet = Fleet()
     test_fleet.add_ship(model="test_ship", name="test_name", faction="test_faction")
@@ -112,8 +106,7 @@ def test_fleet():
 
 
 def test_rotate_2D():
-    """
-    """
+    """"""
 
     x, y = pymada.classes.utils.rotate_2D(x=1.0, y=0.0, theta=90.0)
 
@@ -130,8 +123,7 @@ def test_rotate_2D():
 
 
 def test_board():
-    """
-    """
+    """"""
 
     test_board = Board()
     assert test_board.width == Board.PLAY_AREA_WIDTH
@@ -141,8 +133,7 @@ def test_board():
 
 
 def test_ship_data():
-    """
-    """
+    """"""
 
     assert pymada.data.ships.ships["test_ship"]["armament"]["front"] == 1 * "red"
 
@@ -151,8 +142,7 @@ def test_ship_data():
 
 
 def test_ship():
-    """Test ship generation
-    """
+    """Test ship generation"""
 
     test_ship = pymada.classes.ship.Ship(
         model="test_ship",
@@ -172,8 +162,7 @@ def test_ship():
 
 
 def test_ship_move():
-    """Test basic ship movement including attached hull_zones
-    """
+    """Test basic ship movement including attached hull_zones"""
 
     test_ship = pymada.classes.ship.Ship(
         model="test_ship",
@@ -191,8 +180,7 @@ def test_ship_move():
 
 
 def test_ship_move_exceptions():
-    """Test basic ship movement exceptions
-    """
+    """Test basic ship movement exceptions"""
 
     test_ship = pymada.classes.ship.Ship(
         model="test_ship",
@@ -210,8 +198,7 @@ def test_ship_move_exceptions():
 
 
 def test_piece_position():
-    """Check setting a piece's position incorrectly raises TypeError
-    """
+    """Check setting a piece's position incorrectly raises TypeError"""
 
     test_piece = Piece(name="test piece")
     test_piece.position = Position(x=5.0, y=5.0, theta=0.0)
@@ -221,8 +208,7 @@ def test_piece_position():
 
 
 def test_position_rotation():
-    """
-    """
+    """"""
 
     test_position = Position(x=5.0, y=5.0, theta=0.0)
     test_position._rotate(theta=10)
@@ -231,8 +217,7 @@ def test_position_rotation():
 
 
 def test_position_translation():
-    """
-    """
+    """"""
 
     test_position = Position(x=5.0, y=5.0, theta=20.0)
     test_position._translate(theta=90.0, r=5.0)
@@ -246,8 +231,7 @@ def test_position_translation():
 
 
 def test_position_move():
-    """Test position compound move method
-    """
+    """Test position compound move method"""
 
     test_position = Position(x=5.0, y=5.0, theta=20.0)
 
@@ -269,8 +253,7 @@ def test_position_move():
 
 
 def test_position_eq():
-    """Test position equals
-    """
+    """Test position equals"""
 
     test_position = Position(x=5.0, y=5.0, theta=20.0)
     different_test_position = Position(x=6.0, y=5.0, theta=20.0)
@@ -283,8 +266,7 @@ def test_position_eq():
 
 
 def test_dice_add():
-    """Check adding two Die yields a Dice instance with correct number of Die
-    """
+    """Check adding two Die yields a Dice instance with correct number of Die"""
 
     dice_1 = Dice("red")
     dice_2 = Dice(4 * "blue")
@@ -295,8 +277,7 @@ def test_dice_add():
 
 
 def test_dice_multiply():
-    """Check multiplying a Die yields a Dice instance with correct number of Die
-    """
+    """Check multiplying a Die yields a Dice instance with correct number of Die"""
 
     dice_1 = Dice(2 * "red")
 
@@ -305,8 +286,7 @@ def test_dice_multiply():
 
 
 def test_dice_equals():
-    """Check two Dice are equal
-    """
+    """Check two Dice are equal"""
 
     assert Dice("blue") == Dice("blue")
 
@@ -320,8 +300,7 @@ def test_dice_roll():
 
 
 def test_player_piece_read():
-    """
-    """
+    """"""
 
     test_player_piece = PlayerPiece(
         name="ship for testing", model="test_ship", faction="imperial"
@@ -334,11 +313,14 @@ def test_player_piece_read():
 
 
 def test_create_hull_zone():
-    """
-    """
+    """"""
 
     test_hull_zone = pymada.classes.hull_zone.HullZone(
-        armament=3 * "red", shields=1, LoS_dot=0.5, arc_left=10, arc_right=10,
+        armament=3 * "red",
+        shields=1,
+        LoS_dot=0.5,
+        arc_left=10,
+        arc_right=10,
     )
     assert test_hull_zone.armament == Dice(3 * "red")
     assert test_hull_zone.armament == 3 * "red"

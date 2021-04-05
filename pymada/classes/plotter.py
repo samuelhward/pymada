@@ -7,9 +7,6 @@ import numpy as np
 
 
 class Plotter:
-    """
-    """
-
     def __init__(self):
         """
 
@@ -22,7 +19,7 @@ class Plotter:
         self.plot_methods_dispatch["Base"] = self.draw_base
         self.plot_methods_dispatch["HullZone"] = self.draw_hull_zone
         self.plot_methods_dispatch["Board"] = self.draw_board
-        bokeh.plotting.output_file("pymada_plot.html")
+        bokeh.plotting.output_file(pymada.settings.plot_file_path)
         self.plot = bokeh.plotting.Figure(
             match_aspect=True,
             plot_width=pymada.settings.plot_width,
@@ -35,7 +32,7 @@ class Plotter:
         args:
             obj - object instance for plotting e.g. ship [-]
         kwargs:
-            artist - 
+            artist -
         """
         if pymada.settings.plotting_enable:
 
@@ -58,7 +55,7 @@ class Plotter:
     def erase(self, obj=None, artist=None, *args, **kwargs):
         """
         args:
-            artist - 
+            artist -
         """
 
         if pymada.settings.plotting_enable:
@@ -81,15 +78,13 @@ class Plotter:
                 self.artists[artist] = []
 
     def show(self, *args, **kwargs):
-        """
-        """
+        """"""
 
         if pymada.settings.plotting_enable:
             bokeh.plotting.show(self.plot)
 
     def draw_base(self, base, *args, **kwargs):
-        """
-        """
+        """"""
 
         artist = kwargs.get("artist", None)
         colour = kwargs.get("colour", "#")
@@ -113,8 +108,7 @@ class Plotter:
             self.artists[artist].append(artist_name)
 
     def draw_hull_zone(self, hull_zone, *args, **kwargs):
-        """
-        """
+        """"""
 
         artist = kwargs.get("artist", None)
 
@@ -157,8 +151,7 @@ class Plotter:
                     self.artists[artist].append(artist_name)
 
     def draw_ship(self, ship, *args, **kwargs):
-        """
-        """
+        """"""
 
         artist = kwargs.get("artist", None)
 
@@ -188,9 +181,9 @@ class Plotter:
         """
 
         args:
-            board - 
+            board -
         kwargs:
-            artist - 
+            artist -
         notes:
             currently cannot erase/redraw board as artist is not added
         """
