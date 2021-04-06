@@ -49,6 +49,7 @@ print("finishing...")
 * Formatting by Black
 * CI by Github actions
 * Units in cm/degrees
+* Tests with Pytest
 
 # To-do
 
