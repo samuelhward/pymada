@@ -17,7 +17,7 @@ setuptools.setup(
         "iniconfig==1.1.1",
         "Jinja2==2.11.3",
         "MarkupSafe==1.1.1",
-        "numpy==1.20.2",
+        "numpy==1.21.0",
         "packaging==20.9",
         "Pillow==9.0.0",
         "pluggy==0.13.1",
