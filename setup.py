@@ -19,7 +19,7 @@ setuptools.setup(
         "MarkupSafe==1.1.1",
         "numpy==1.21.0",
         "packaging==20.9",
-        "Pillow==9.0.0",
+        "Pillow==9.0.1",
         "pluggy==0.13.1",
         "py==1.10.0",
         "pyparsing==2.4.7",
