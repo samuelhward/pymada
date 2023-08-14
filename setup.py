@@ -28,7 +28,7 @@ setuptools.setup(
         "PyYAML==5.4.1",
         "six==1.15.0",
         "toml==0.10.2",
-        "tornado==6.1",
+        "tornado==6.3.3",
         "typing-extensions==3.7.4",
     ],
 )
